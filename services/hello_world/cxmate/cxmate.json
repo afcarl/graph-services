@@ -1,0 +1,37 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "localhost:8080",
+    "title": "Hello World",
+    "version": "1.0.0",
+    "author": "Keiichiro Ono",
+    "email": "kono@ucsd.edu",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Simple template project for using CX mate with Python",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [{
+        "name": "network_name",
+        "default": "Sample network 1",
+        "description": "Name of the network returned from the service"
+    }],
+    "input": [{
+      "label": "in_net",
+      "description": "In net",
+      "aspects": ["networkAttributes"]
+    }],
+    "singletonInput": true,
+    "output": [{
+      "label": "out_net",
+      "description": "An output network",
+      "aspects": ["nodes", "edges", "networkAttributes", "nodeAttributes", "edgeAttributes"]
+    }],
+    "singletonOutput": true
+  }
+}
