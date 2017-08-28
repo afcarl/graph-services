@@ -1,0 +1,36 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "localhost:8080",
+    "title": "GraphGenelator",
+    "version": "1.0.0",
+    "author": "Mitsuhiro ETO",
+    "email": "frn.fnts@gmail.com",
+    "description": "generate a graph",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [
+    ],
+    "input": [
+      {
+        "label": "My output network",
+        "description": "An input network with heat values attached to nodes",
+        "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes"]
+      }
+    ],
+    "singletonInput": true,
+    "output": [
+      {
+        "label": "My output network",
+        "description": "An output network with new heats and a rank attribute created by diffusion",
+        "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes", "networkAttributes"]
+      }
+    ],
+    "singletonOutput": true
+  }
+}
