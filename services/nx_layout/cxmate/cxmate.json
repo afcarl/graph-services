@@ -6,7 +6,7 @@
     }
   },
   "service": {
-    "location": "localhost:8080",
+    "location": "graphviz_layout:8080",
     "title": "Heat Diffusion",
     "version": "3.0.0",
     "author": "Daniel Carlin",
@@ -16,36 +16,24 @@
     "description": "Accepts a network with node heats, and propogates the heat along edges to create a new heat layout",
     "license": "MIT",
     "language": "Python",
-    "parameters": [
-      {
-        "name": "time",
-        "default": "0.1",
-        "description": "The upper bound on the exponential multiplication performed by diffusion",
-        "type": "number"
-
-      },
-      {
-        "name": "normalize_laplacian",
-        "default": "False",
-        "description": "If True, will create a normalized laplacian matrix for diffusion",
-        "type": "boolean"
-      },
-      {
-        "name": "input_attribute_name",
-        "default": "diffusion_input",
-        "description": "The key diffusion will use to search for heats in the node attributes with"
-      },
-      {
-        "name": "output_attribute_name",
-        "default": "diffusion_output",
-        "description": "Will be the prefix of the _rank and _heat attriubtes created by diffusion"
-      }
-    ],
+    "parameters":[{
+      "name": "name",
+      "default": "graphviz_layout from networkX",
+      "description": "Name of the network returned from the service"
+    },{
+      "name" : "prog",
+      "default" : "neato",
+      "description" : "Name of Graphviz layout program"
+    },{
+      "name" : "root",
+      "default" : "None",
+      "description" : "Root node for twopi layout"
+    } ],
     "input": [
       {
         "label": "Input",
         "description": "An input network with heat values attached to nodes",
-        "aspects": ["nodes", "edges", "nodeAttributes"]
+        "aspects": ["nodes", "edges"]
       }
     ],
     "singletonInput": true,
@@ -53,7 +41,7 @@
       {
         "label": "Output",
         "description": "An output network with new heats and a rank attribute created by diffusion",
-        "aspects": ["cartesianLayout"]
+        "aspects": ["nodes", "edges", "networkAttributes", "nodeAttributes", "edgeAttributes", "cartesianLayout"]
       }
     ],
     "singletonOutput": true
