@@ -20,7 +20,15 @@
       "name": "name",
       "default": "graphviz_layout from networkX",
       "description": "Name of the network returned from the service"
-    }],
+    },{
+      "name" : "prog",
+      "default" : "neato",
+      "description" : "Name of Graphviz layout program"
+    },{
+      "name" : "root",
+      "default" : "None",
+      "description" : "Root node for twopi layout"
+    } ],
     "input": [
       {
         "label": "Input",

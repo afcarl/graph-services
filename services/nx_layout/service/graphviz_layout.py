@@ -22,7 +22,7 @@ class MyService(cxmate.Service):
         for n, nodedata in net.nodes_iter(data=True):
             if 'name' in nodedata.keys():
                 del nodedata['name']
-        pos = graphviz_layout(net)
+        pos = graphviz_layout(net, prog=params['prog'], root=params['root'])
 
         return self.outputStream(network, pos)
 
