@@ -1,0 +1,39 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "basic-layout-service:8080",
+    "title": "NetworkX Basic Layouts",
+    "version": "1.0.0",
+    "author": "Keiichiro Ono",
+    "email": "kono@ucsd.edu",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Simple service applying basic graph layout algorithm",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [{
+        "name": "layout-name",
+        "default": "circular",
+        "description": "Layout algorithm name"
+    }],
+    "input": [{
+      "label": "in_net",
+      "description": "In net",
+      "aspects": ["nodes", "edges"]
+    }],
+
+    "singletonInput": true,
+
+    "output": [{
+      "label": "out_net",
+      "description": "Node positions for the given network",
+      "aspects": ["cartesianLayout"]
+    }],
+    "singletonOutput": true
+  }
+}
