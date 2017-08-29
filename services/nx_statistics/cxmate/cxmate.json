@@ -1,0 +1,39 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "statistics-service:8080",
+    "title": "Network Statistics",
+    "version": "1.0.0",
+    "author": "Keiichiro Ono",
+    "email": "kono@ucsd.edu",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Simple service adding some network statistics for the given graph",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [{
+        "name": "type",
+        "default": "betweenness",
+        "description": "Type of analysis to be performed"
+    }],
+    "input": [{
+      "label": "in_net",
+      "description": "In net",
+      "aspects": ["nodes", "edges"]
+    }],
+
+    "singletonInput": true,
+
+    "output": [{
+      "label": "out_net",
+      "description": "An output network",
+      "aspects": ["nodeAttributes"]
+    }],
+    "singletonOutput": true
+  }
+}
