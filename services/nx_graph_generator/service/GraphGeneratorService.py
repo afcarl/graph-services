@@ -17,16 +17,7 @@ class GraphGeneratorService(cxmate.Service):
         return cx
 
     def generate_graph(self, params):
-        network = networkx.duplication_divergence_graph(params["n"],params["p"], params["seed"], params["directed"])
-
-        # this network doesn't have enough attributes to use cxmate.Adapter.from_networkx
-        network.graph["label"] = "My output network"
-        for n in network.nodes():
-            network.node[n]["id"] = n
-        for i, e in enumerate(network.edges()):
-            s, t = e[0], e[1]
-            network[s][t]["id"] = i
-        yield network
+        raise NotImplementedError
 
 
 if __name__ == "__main__":
