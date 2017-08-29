@@ -1,3 +1,4 @@
+
 {
   "general": {
     "location": "0.0.0.0:80",
@@ -6,7 +7,7 @@
     }
   },
   "service": {
-    "location": "localhost:8080",
+    "location": "graph-generator-service:8080",
     "title": "GraphGenelator",
     "version": "1.0.0",
     "author": "Mitsuhiro ETO",
