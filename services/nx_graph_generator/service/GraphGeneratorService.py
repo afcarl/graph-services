@@ -1,6 +1,5 @@
 import cxmate
 import networkx
-from pdb import set_trace as ps
 
 
 class GraphGeneratorService(cxmate.Service):
@@ -13,26 +12,21 @@ class GraphGeneratorService(cxmate.Service):
         :returns: a python generator that returns CX elements
         """
         # network = cxmate.Adapter.to_networkx(input_stream)
-        network = generate_graph()
-        # for n in network:
-            # ps()
+        network = self.generate_graph(params)
         cx = cxmate.Adapter.from_networkx(network)
         return cx
 
+    def generate_graph(self, params):
+        network = networkx.duplication_divergence_graph(params["n"],params["p"], params["seed"], params["directed"])
 
-def generate_graph():
-    network = networkx.complete_graph(4)
-    # network.remove_node(0)
-    # ps()
-
-    # this network doesn't have enough attributes to use cxmate.Adapter.from_networkx
-    network.graph["label"] = "My output network"
-    for n in network.nodes():
-        network.node[n]["id"] = n
-    for i, e in enumerate(network.edges()):
-        s, t = e[0], e[1]
-        network[s][t]["id"] = i
-    yield network
+        # this network doesn't have enough attributes to use cxmate.Adapter.from_networkx
+        network.graph["label"] = "My output network"
+        for n in network.nodes():
+            network.node[n]["id"] = n
+        for i, e in enumerate(network.edges()):
+            s, t = e[0], e[1]
+            network[s][t]["id"] = i
+        yield network
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@
     }
   },
   "service": {
-    "location": "graph-generator-service:8080",
+    "location": "random-graph-generator-service:8080",
     "title": "GraphGenelator",
     "version": "1.0.0",
     "author": "Mitsuhiro ETO",
@@ -15,7 +15,80 @@
     "description": "generate a graph",
     "license": "MIT",
     "language": "Python",
-    "parameters": [
+    "parameters":[
+      {
+        "name": "algorithm",
+        "default": "fast_gnp_random_graph",
+        "description": "Name of graph generating algorithm",
+        "type": "string"
+
+      },
+      {
+        "name": "n",
+        "default": "10",
+        "description": "The number of nodes",
+        "type": "integer"
+      },
+      {
+        "name": "m",
+        "default": "5",
+        "description": "The number of edges",
+        "type": "integer"
+      },
+      {
+        "name": "p",
+        "default": "0.3",
+        "description": "Probability for edge creation",
+        "type": "number"
+      },
+      {
+        "name": "k",
+        "default": "3",
+        "description": "Each node is connected to k nearest neighbors in ring topology",
+        "type": "integer"
+      },
+      {
+        "name": "d",
+        "default": "3",
+        "description": "Degree",
+        "type": "integer"
+      },
+      {
+        "name": "seed",
+        "default": "-1",
+        "description": "Seed for random number generator",
+        "type": "integer"
+      },
+      {
+        "name": "directed",
+        "default": "False",
+        "description": "If True return a directed graph",
+        "type": "boolean"
+      },
+      {
+        "name": "p1",
+        "default": "0.2",
+        "description": "Probability of adding an edge to the backbone",
+        "type": "number"
+      },
+      {
+        "name": "p2",
+        "default": "0.2",
+        "description": "Probability of adding an edge one level beyond backbone",
+        "type": "number"
+      },
+      {
+        "name": "tries",
+        "default": "100",
+        "description": "Number of attempts to generate a connected graph",
+        "type": "integer"
+      },
+      {
+        "name": "gamma",
+        "default": "3",
+        "description": "Exponent of the power-law",
+        "type": "number"
+      }
     ],
     "input": [
       {

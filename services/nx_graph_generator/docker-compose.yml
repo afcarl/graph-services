@@ -1,7 +1,7 @@
 version: '3'
 services:
 
-  graph-generator-service:
+  random-graph-generator-service:
     build: ./service
 
   cxmate:
@@ -9,4 +9,4 @@ services:
     ports:
      - "80:80"
     links:
-     - graph-generator-service
+     - random-graph-generator-service

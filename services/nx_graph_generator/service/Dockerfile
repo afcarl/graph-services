@@ -16,7 +16,8 @@ RUN python setup.py install
 
 WORKDIR /services
 
-COPY nx_graph_generator.py ./
+COPY GraphGeneratorService.py ./
+COPY RandomGraphGeneratorService.py ./
 
 EXPOSE 8080
-CMD ["python", "./nx_graph_generator.py"]
+CMD ["python", "./RandomGraphGeneratorService.py"]
