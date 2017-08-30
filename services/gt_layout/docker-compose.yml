@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  gt-layout-service:
+    build: ./service
+
+  cxmate:
+    build: ./cxmate
+    ports:
+     - "80:80"
+    links:
+     - gt-layout-service
