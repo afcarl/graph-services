@@ -1,0 +1,74 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "nx_pagerank:8080",
+    "title": "Pagerank from NetworkX",
+    "version": "1.0.0",
+    "author": "",
+    "email": "",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Apply graphviz layouts algorithm from NetworkX",
+    "license": "MIT",
+    "language": "Python",
+    "parameters":[
+    {
+      "name" : "is_directed",
+      "default" : "True",
+      "description" : "Whether input network is directed graph or not",
+      "type": "boolean"
+    },{
+      "name" : "alpha",
+      "default" : "0.85",
+      "description" : "Damping parameter for PageRank",
+      "type": "number"
+    },{
+      "name" : "personalization",
+      "default" : "None",
+      "description" : "The “personalization vector” consisting of a dictionary with a key for every graph node and nonzero personalization value for each node. By default, a uniform distribution is used"
+    },{
+      "name" : "max_iter",
+      "default" : "100",
+      "description" : "Maximum number of iterations in power method eigenvalue solver",
+      "type": "integer"
+    },{
+      "name" : "tol",
+      "default" : "0.000001",
+      "description" : "Error tolerance used to check convergence in power method solver",
+      "type" : "number"
+    },{
+      "name" : "nstart",
+      "default" : "None",
+      "description" : "Starting value of PageRank iteration for each node"
+    },{
+      "name" : "weight",
+      "default" : "weight",
+      "description" : "Edge data key to use as weight. If None weights are set to 1"
+    },{
+      "name" : "dangling",
+      "default" : "None",
+      "description" : "The outedges to be assigned to any “dangling” nodes, i.e., nodes without any outedges. The dict key is the node the outedge points to and the dict value is the weight of that outedge. By default, dangling nodes are given outedges according to the personalization vector (uniform if not specified). This must be selected to result in an irreducible transition matrix (see notes under google_matrix). It may be common to have the dangling dict to be the same as the personalization dict"
+    } ],
+    "input": [
+      {
+        "label": "Input",
+        "description": "An input network with heat values attached to nodes",
+        "aspects": ["nodes", "edges"]
+      }
+    ],
+    "singletonInput": true,
+    "output": [
+      {
+        "label": "Output",
+        "description": "An output network with new heats and a rank attribute created by diffusion",
+        "aspects": ["nodeAttributes"]
+      }
+    ],
+    "singletonOutput": true
+  }
+}
