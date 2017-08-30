@@ -19,10 +19,7 @@ RUN python setup.py install
 
 WORKDIR /services
 COPY service.py ./
-COPY graphviz_layout.py ./
-COPY cxmate_pb2_grpc.py ./
-COPY cxmate_pb2.py ./
 
 EXPOSE 8080
 
-CMD ["python", "./graphviz_layout.py"]
+CMD ["python", "./service.py"]
