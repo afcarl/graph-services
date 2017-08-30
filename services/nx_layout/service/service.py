@@ -23,8 +23,6 @@ class MyService(cxmate.Service):
         return self.outputStream(network, pos)
 
     def outputStream(self, network, pos):
-        for i in cxmate.Adapter.from_networkx(network):
-            yield i
         for key in pos.keys():
             builder = NetworkElementBuilder('Output')
             ele = builder.new_element()
