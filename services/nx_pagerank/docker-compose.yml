@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  nx_pagerank:
+    build: ./service
+
+  cxmate:
+    build: ./cxmate
+    ports:
+     - "80:80"
+    links:
+     - nx_pagerank
