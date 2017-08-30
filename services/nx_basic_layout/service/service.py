@@ -21,9 +21,10 @@ class BasicLayoutService(cxmate.Service):
             return self.__output_stream(pos)
 
     def __get_layout(self, net, layout_type):
-        if layout_type is 'circular':
+        if layout_type == 'circular':
             return nx.circular_layout(net)
-        elif layout_type is 'spring':
+        elif layout_type == 'spring':
+
             return nx.spring_layout(net)
         else:
             return nx.circular_layout(net)
