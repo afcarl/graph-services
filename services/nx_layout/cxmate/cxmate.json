@@ -7,13 +7,13 @@
   },
   "service": {
     "location": "graphviz_layout:8080",
-    "title": "Heat Diffusion",
-    "version": "3.0.0",
-    "author": "Daniel Carlin",
-    "email": "edsage@ucsd.edu",
-    "website": "http://apps.cytoscape.org/apps/diffusion",
-    "repository": "http://github.com/idekerlab/diffusiond",
-    "description": "Accepts a network with node heats, and propogates the heat along edges to create a new heat layout",
+    "title": "Graphviz Layouts from NetworkX",
+    "version": "1.0.0",
+    "author": "",
+    "email": "",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Apply graphviz layouts algorithm from NetworkX",
     "license": "MIT",
     "language": "Python",
     "parameters":[{
@@ -41,7 +41,7 @@
       {
         "label": "Output",
         "description": "An output network with new heats and a rank attribute created by diffusion",
-        "aspects": ["nodes", "edges", "networkAttributes", "nodeAttributes", "edgeAttributes", "cartesianLayout"]
+        "aspects": ["cartesianLayout"]
       }
     ],
     "singletonOutput": true
