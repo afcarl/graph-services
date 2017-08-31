@@ -20,11 +20,18 @@
         "name": "layout-name",
         "default": "sfdp",
         "description": "Layout algorithm name"
-    }],
+      },
+      {
+        "name": "with-position",
+        "default": "False",
+        "type": "boolean",
+        "description": "Whether output with position aspect"
+      }
+    ],
     "input": [{
-      "label": "in_net",
+      "label": "out_net",
       "description": "In net",
-      "aspects": ["nodes", "edges"]
+      "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes", "networkAttributes"]
     }],
 
     "singletonInput": true,
@@ -32,7 +39,7 @@
     "output": [{
       "label": "out_net",
       "description": "Layout data",
-      "aspects": ["nodes", "edges", "cartesianLayout"]
+      "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes", "networkAttributes", "cartesianLayout"]
     }],
     "singletonOutput": true
   }
