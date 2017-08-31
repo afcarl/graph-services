@@ -1,0 +1,12 @@
+version: '3'
+services:
+
+  ig-community_label_propagation-service:
+    build: ./service
+
+  cxmate:
+    build: ./cxmate
+    ports:
+     - "80:80"
+    links:
+     - ig-community_label_propagation-service
