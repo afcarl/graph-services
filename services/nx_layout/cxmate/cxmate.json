@@ -17,10 +17,6 @@
     "license": "MIT",
     "language": "Python",
     "parameters":[{
-      "name": "name",
-      "default": "graphviz_layout from networkX",
-      "description": "Name of the network returned from the service"
-    },{
       "name" : "prog",
       "default" : "neato",
       "description" : "Name of Graphviz layout program"

@@ -11,18 +11,26 @@ class MyService(cxmate.Service):
         logging.warn(params)
 
         network = cxmate.Adapter.to_networkx(input_stream)
-        
+
+        nodedata_tmp = []        
         for net in network:
             net.graph['label'] = 'Output'
-            net.graph['name'] = params['name']
         for n, nodedata in net.nodes_iter(data=True):
             if 'name' in nodedata.keys():
+                nodedata_tmp.append(nodedata['name'])
                 del nodedata['name']
         pos = graphviz_layout(net, prog=params['prog'], root=params['root'])
+
+        i = 0
+        for n, nodedata in net.nodes_iter(data=True):
+            nodedata['name'] = nodedata_tmp[i]
+            i += 1
 
         return self.outputStream(network, pos)
 
     def outputStream(self, network, pos):
+        for i in cxmate.Adapter.from_networkx(network):
+            yield i
         for key in pos.keys():
             builder = NetworkElementBuilder('Output')
             ele = builder.new_element()
