@@ -34,10 +34,15 @@ class IgraphAdapter():
                 edge = net_element.edge
                 source_id = int(edge.sourceId)
                 target_id = int(edge.targetId)
-                edges.append((source_id, target_id))
+                eid = int(edge.id)
+                edges.append((source_id, target_id, eid))
 
         for e in edges:
+
             g.add_edge(node_dict[e[0]], node_dict[e[1]])
+
+            eid = g.get_eid(node_dict[e[0]], node_dict[e[1]])
+            g.es[eid]['eid'] = e[2]
 
         logger.info(g.summary())
 

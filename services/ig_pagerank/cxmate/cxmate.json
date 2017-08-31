@@ -18,7 +18,7 @@
     "language": "Python",
     "parameters": [{
         "name": "stat-name",
-        "default": "degree",
+        "default": "pagerank",
         "description": "Target algorithm name"
     }],
     "input": [{
@@ -32,7 +32,7 @@
     "output": [{
       "label": "out_net",
       "description": "Network attributes",
-      "aspects": ["nodeAttributes"]
+      "aspects": ["nodeAttributes", "edgeAttributes"]
     }],
     "singletonOutput": true
   }
