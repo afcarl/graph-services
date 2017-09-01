@@ -1,5 +1,6 @@
 import igraph as ig
 import logging
+import itertools
 from cxmate.cxmate_pb2 import *
 from cxmate.cxmate_pb2_grpc import *
 
@@ -10,43 +11,62 @@ logger.setLevel(logging.INFO)
 class IgraphAdapter():
 
     @staticmethod
-    def to_igraph(input_stream):
-
-        # Create an igraph object
-
-        g = ig.Graph()
-
-        node_dict = {}
-        node_idx = 0
-        edges = []
-
-        for net_element in input_stream:
-            net_element_type = net_element.WhichOneof('element')
-
-            if net_element_type == 'node':
-
-                node_id = int(net_element.node.id)
-
-                node_dict[node_id] = node_idx
-                node_idx += 1
-
-                g.add_vertex(name=node_id)
-
-            elif net_element_type == 'edge':
-                edge = net_element.edge
-                source_id = int(edge.sourceId)
-                target_id = int(edge.targetId)
-                edges.append((source_id, target_id))
-
-        for e in edges:
-            g.add_edge(node_dict[e[0]], node_dict[e[1]])
-
-        logger.info(g.summary())
-
-        return g
+    def to_igraph(ele_iter):
+        networks = []
+        while ele_iter:
+            network, ele_iter = IgraphAdapter.read_igraph(ele_iter)
+            networks.append(network)
+        return networks
 
     @staticmethod
-    def from_igraph(network):
+    def read_igraph(ele_iter):
+        network = ig.Graph(directed=True)
+        attrs = []
+        edges = {}
+        for ele in ele_iter:
+            if not 'label' in network.attributes():
+                network['label'] = ele.label
+            if ele.label != network['label']:
+                return network, itertools.chain([ele], ele_iter)
+            ele_type = ele.WhichOneof('element')
+            if ele_type == 'node':
+                node = ele.node
+                network.add_vertex(name=node.name, nodeId=int(node.id))
+            elif ele_type == 'edge':
+                edge = ele.edge
+                src, tgt = int(edge.sourceId), int(edge.targetId)
+                src_index = network.vs.find(nodeId=src).index
+                tgt_index = network.vs.find(nodeId=tgt).index
+                edges[int(edge.id)] = (src_index, tgt_index)
+                network.add_edge(src_index, tgt_index, id=int(edge.id), interaction=edge.interaction)
+            elif ele_type == 'nodeAttribute':
+                attr = ele.nodeAttribute
+                network.vs.find(nodeId=attr.nodeId)[attr.name] = IgraphAdapter.parse_value(attr)
+            elif ele_type == 'edgeAttribute':
+                attr = ele.edgeAttribute
+                attrs.append(attr)
+            elif ele_type == 'networkAttribute':
+                attr = ele.networkAttribute
+                network[attr.name] = IgraphAdapter.parse_value(attr)
+            for attr in attrs:
+                source, target = edges[int(attr.edgeId)]
+                network.es.select(_source=source, _target=target)[0][attr.name] = IgraphAdapter.parse_value(attr)
+        return network, None
+
+    @staticmethod
+    def parse_value(attr):
+        value = attr.value
+        if attr.type:
+            if attr.type in ('boolean'):
+                value = value.lower() in ('true')
+            elif attr.type in ('double', 'float'):
+                value = float(value)
+            elif attr.type in ('integer', 'short', 'long'):
+                value = int(value)
+        return value
+
+    @staticmethod
+    def from_igraph(networks):
         """
         Creates a CX element generator from a list of igraph objects
 
@@ -54,36 +74,37 @@ class IgraphAdapter():
         :returns: A CX element generator
         """
 
-    # for network in networks:
-        builder = NetworkElementBuilder(network['label'])
+        for network in networks:
+            builder = NetworkElementBuilder(network['label'])
 
-        for node in network.vs():
-            nodeId = node.index
-            attrs = node.attributes()
-            yield builder.Node(nodeId, str(attrs.get('name', '')))
+            for node in network.vs():
+                nodeId = node['nodeId']
+                attrs = node.attributes()
+                yield builder.Node(nodeId, str(attrs.get('name', '')))
 
-            for k, v in attrs.items():
-                if k not in ('name'):
-                    yield builder.NodeAttribute(nodeId, k, v)
+                for k, v in attrs.items():
+                    if k not in ('name', 'nodeId') and v is not None:
+                        yield builder.NodeAttribute(nodeId, k, v)
 
-        for edge in network.es():
-            sourceId = edge.source
-            targetId = edge.target
-            attrs = edge.attributes()
-            yield builder.Edge(attrs.get('id', edge.index), sourceId, targetId, attrs.get('interaction', ''))
+            for edge in network.es():
+                source_index = edge.source
+                sourceId = network.vs[source_index]['nodeId']
+                target_index = edge.target
+                targetId = network.vs[target_index]['nodeId']
+                attrs = edge.attributes()
+                yield builder.Edge(attrs.get('id', edge.index), sourceId, targetId, attrs.get('interaction', ''))
 
-            for k, v in attrs.items():
-                if k not in ('interaction', 'id'):
-                    yield builder.EdgeAttribute(attrs.get('id', edge.index), k, v)
+                for k, v in attrs.items():
+                    if k not in ('interaction', 'id'):
+                        yield builder.EdgeAttribute(attrs.get('id', edge.index), k, v)
 
-        for attrs_key in network.attributes():
-            yield builder.NetworkAttribute(attrs_key, network[attrs_key])
+            for attrs_key in network.attributes():
+                yield builder.NetworkAttribute(attrs_key, network[attrs_key])
 
 
 class NetworkElementBuilder():
     """
     Factory class for declaring the network element from igraph attributes
-    (should import this class from service.py and not write here?)
     """
 
     def __init__(self, label):
@@ -143,7 +164,7 @@ class NetworkElementBuilder():
         if isinstance(value, bool):
             return 'boolean', str(value)
         elif isinstance(value, float):
-            return 'float', str(value)
+            return 'double', str(value)
         elif isinstance(value, int):
             return 'integer', str(value)
         return 'string', str(value)
