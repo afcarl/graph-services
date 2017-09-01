@@ -1,6 +1,6 @@
 {
   "general": {
-    "location": "0.0.0.0:80",
+    "location": "0.0.0.0:3000",
     "logger": {
       "debug": true
     }
