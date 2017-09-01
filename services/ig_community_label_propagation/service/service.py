@@ -3,11 +3,10 @@ import logging
 
 import igraph as ig
 from igraph_adapter import *
+from cxmate.cxmate_pb2 import NetworkElement
 
 logger = logging.getLogger('igraph_service')
 logger.setLevel(logging.INFO)
-
-from cxmate.cxmate_pb2 import NetworkElement
 
 
 class IgStatisticsService(cxmate.Service):
@@ -15,23 +14,12 @@ class IgStatisticsService(cxmate.Service):
     def process(self, params, input_stream):
         logging.info(params)
 
-        ig_network = IgraphAdapter.to_igraph(input_stream)
-        pr = ig_network.pagerank(vertices=ig_network.vs)
-        ig_network.vs['pagerank'] = pr
-        ig_network['label'] = 'out_net'
+        ig_networks = IgraphAdapter.to_igraph(input_stream)
+        for net in ig_networks:
 
-        return IgraphAdapter.from_igraph(ig_network)
+            net['label'] = 'out_net'
 
-    def __create_output_stream(self, vs):
-        for v in vs:
-            ele = NetworkElement()
-            ele.label = 'out_net'
-            nodeAttr = ele.nodeAttribute
-            nodeAttr.nodeId = v['name']
-            nodeAttr.name = 'pagerank'
-            nodeAttr.type = 'double'
-            nodeAttr.value = str(v['pagerank'])
-            yield ele
+        return IgraphAdapter.from_igraph(ig_networks)
 
 
 if __name__ == "__main__":

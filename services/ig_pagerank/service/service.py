@@ -7,7 +7,6 @@ from igraph_adapter import *
 logger = logging.getLogger('igraph_service')
 logger.setLevel(logging.INFO)
 
-
 from cxmate.cxmate_pb2 import NetworkElement
 
 
