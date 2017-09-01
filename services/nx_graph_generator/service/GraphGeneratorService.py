@@ -11,7 +11,8 @@ class GraphGeneratorService(cxmate.Service):
         :param input_stream: a python generator that returns CX elements
         :returns: a python generator that returns CX elements
         """
-        # network = cxmate.Adapter.to_networkx(input_stream)
+        for x in input_stream:
+            pass
         network = self.generate_graph(params)
         cx = cxmate.Adapter.from_networkx(network)
         return cx

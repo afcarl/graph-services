@@ -15,7 +15,7 @@
 You can select a graph generator by adding query-string `algorithm`
 
 e.g. 
-` curl -d "@./sample-data/sample.cx" -H "Content-Type: application/json" -X POST localhost?algorithm=gnm_random_graph" | jq
+` curl -d "@./sample-data/sample.cx" -H "Content-Type: application/json" -X POST "localhost?algorithm=gnm_random_graph" | jq
 `
 
 Random graph generator you can select are below.
