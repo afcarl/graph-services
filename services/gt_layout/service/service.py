@@ -1,5 +1,6 @@
 import cxmate
 import logging
+import itertools
 
 import numpy as np
 
@@ -63,6 +64,11 @@ class Adapter(cxmate.Adapter):
         attrs = []
         edges = {}
         nodes = {}
+        network.vp.id = network.new_vp("int")
+        network.vp.name = network.new_vp("string")
+        network.ep.id = network.new_ep("int")
+        network.ep.interaction = network.new_ep("string")
+
         for ele in ele_iter:
             if not 'label' in network.graph_properties:
                 network.graph_properties["label"] = network.new_graph_property("string")
@@ -72,11 +78,17 @@ class Adapter(cxmate.Adapter):
             ele_type = ele.WhichOneof('element')
             if ele_type == 'node':
                 node = ele.node
-                nodes[node.id] = network.add_vertex()
+                new_node = network.add_vertex()
+                nodes[node.id] = new_node
+                network.vp.id[new_node] = int(node.id)
+                network.vp.name[new_node] = node.name
             elif ele_type == 'edge':
                 edge = ele.edge
                 src, tgt = int(edge.sourceId), int(edge.targetId)
-                edges[int(edge.id)] = network.add_edge(nodes[src], nodes[tgt])
+                new_edge = network.add_edge(nodes[src], nodes[tgt])
+                edges[int(edge.id)] = new_edge
+                network.ep.id[new_edge] = int(edge.id)
+                network.ep.interaction[new_edge] = edge.interaction
             elif ele_type == 'nodeAttribute':
                 attr = ele.nodeAttribute
                 value = Adapter.parse_value(attr)
@@ -111,7 +123,7 @@ class Adapter(cxmate.Adapter):
             gt_type = python_type
         elif python_type == 'list' and len(x) > 0:
             if is_vector == False:  # avoid nested vector type
-                gt_type = get_gt_type(x[0], is_vector=True)
+                gt_type = Adapter.get_gt_type(x[0], is_vector=True)
         if gt_type == 'object' and is_vector:
             return 'object'
         return gt_type if not is_vector else 'vector<{t}>'.format(t=gt_type)
