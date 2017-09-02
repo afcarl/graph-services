@@ -1,9 +1,7 @@
 import cxmate
 import logging
-
 import igraph as ig
-from igraph_adapter import *
-from cxmate.cxmate_pb2 import NetworkElement
+from Adapter import NetworkElementBuilder, IgraphAdapter
 
 logger = logging.getLogger('igraph_service')
 logger.setLevel(logging.INFO)

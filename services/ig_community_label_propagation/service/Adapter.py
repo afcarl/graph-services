@@ -1,14 +1,14 @@
 import igraph as ig
 import logging
 import itertools
-from cxmate.cxmate_pb2 import *
-from cxmate.cxmate_pb2_grpc import *
+import cxmate
+from cxmate.cxmate_pb2 import NetworkElement
 
-logger = logging.getLogger('igraph_adapter')
+logger = logging.getLogger('IgraphAdapter')
 logger.setLevel(logging.INFO)
 
 
-class IgraphAdapter():
+class IgraphAdapter(cxmate.Adapter):
 
     @staticmethod
     def to_igraph(ele_iter):
@@ -20,9 +20,11 @@ class IgraphAdapter():
 
     @staticmethod
     def read_igraph(ele_iter):
-        network = ig.Graph(directed=True)
+        network = ig.Graph(directed=False)
         attrs = []
+        nodes = {}
         edges = {}
+        edges_index = {}
         for ele in ele_iter:
             if not 'label' in network.attributes():
                 network['label'] = ele.label
@@ -32,16 +34,20 @@ class IgraphAdapter():
             if ele_type == 'node':
                 node = ele.node
                 network.add_vertex(name=node.name, nodeId=int(node.id))
+                nodes[node.id] = network.vcount() - 1
             elif ele_type == 'edge':
                 edge = ele.edge
                 src, tgt = int(edge.sourceId), int(edge.targetId)
-                src_index = network.vs.find(nodeId=src).index
-                tgt_index = network.vs.find(nodeId=tgt).index
+                # src_index = network.vs[nodes[src]].index
+                # tgt_index = network.vs[nodes[tgt]].index
+                src_index = nodes[src]
+                tgt_index = nodes[tgt]
                 edges[int(edge.id)] = (src_index, tgt_index)
                 network.add_edge(src_index, tgt_index, id=int(edge.id), interaction=edge.interaction)
+                edges_index[int(edge.id)] = network.ecount() - 1
             elif ele_type == 'nodeAttribute':
                 attr = ele.nodeAttribute
-                network.vs.find(nodeId=attr.nodeId)[attr.name] = IgraphAdapter.parse_value(attr)
+                network.vs[nodes[attr.nodeId]][attr.name] = IgraphAdapter.parse_value(attr)
             elif ele_type == 'edgeAttribute':
                 attr = ele.edgeAttribute
                 attrs.append(attr)
@@ -50,7 +56,7 @@ class IgraphAdapter():
                 network[attr.name] = IgraphAdapter.parse_value(attr)
             for attr in attrs:
                 source, target = edges[int(attr.edgeId)]
-                network.es.select(_source=source, _target=target)[0][attr.name] = IgraphAdapter.parse_value(attr)
+                network.es[edges_index[attr.edgeId]][attr.name] = IgraphAdapter.parse_value(attr)
         return network, None
 
     @staticmethod
@@ -87,10 +93,8 @@ class IgraphAdapter():
                         yield builder.NodeAttribute(nodeId, k, v)
 
             for edge in network.es():
-                source_index = edge.source
-                sourceId = network.vs[source_index]['nodeId']
-                target_index = edge.target
-                targetId = network.vs[target_index]['nodeId']
+                sourceId = network.vs[edge.source]['nodeId']
+                targetId = network.vs[edge.target]['nodeId']
                 attrs = edge.attributes()
                 yield builder.Edge(attrs.get('id', edge.index), sourceId, targetId, attrs.get('interaction', ''))
 
