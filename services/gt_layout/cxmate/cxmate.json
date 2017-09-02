@@ -18,14 +18,20 @@
     "language": "Python",
     "parameters": [{
         "name": "layout-name",
-        "default": "sfdp",
+        "default": "sfdp_layout",
         "description": "Layout algorithm name"
       },
       {
         "name": "with-position",
-        "default": "False",
+        "default": "True",
         "type": "boolean",
         "description": "Whether output with position aspect"
+      },
+      {
+        "name": "root",
+        "default": "0",
+        "type": "integer",
+        "description": "The root of the radial tree."
       }
     ],
     "input": [{
