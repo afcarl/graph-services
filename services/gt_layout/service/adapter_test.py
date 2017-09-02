@@ -2,7 +2,8 @@ import unittest
 import random
 
 import graph_tool
-from service import Adapter, NetworkElementBuilder, GtLayoutService
+from Adapter import Adapter
+from service import GtLayoutService
 
 class TestGraphToolAdapter(unittest.TestCase):
     def test_get_gt_type(self):

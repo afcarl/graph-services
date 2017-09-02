@@ -16,4 +16,4 @@ COPY *.py ./
 
 EXPOSE 8080
 
-CMD ["python", "./service_test.py"]
+CMD ["python", "./adapter_test.py"]
