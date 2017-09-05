@@ -34,8 +34,8 @@ Layout names you can select are below.
 - `planar_layout`
 - `random_layout`
 
-### with-position
-`with-position` indicates whether the output network is containing position attribute or not.
+### only-layout
+`only-layout` indicates whether the output is only layout or with network itself.
 The default value is `True`.
 
 ### root
