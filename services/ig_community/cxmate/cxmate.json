@@ -36,7 +36,7 @@
     "input": [{
       "label": "in_net",
       "description": "In net",
-      "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes"]
+      "aspects": ["nodes", "edges"]
     }],
 
     "singletonInput": true,
