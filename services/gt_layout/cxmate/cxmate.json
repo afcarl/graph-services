@@ -22,10 +22,10 @@
         "description": "Layout algorithm name"
       },
       {
-        "name": "with-position",
+        "name": "only-layout",
         "default": "True",
         "type": "boolean",
-        "description": "Whether output with position aspect"
+        "description": "Whether output is containing network."
       },
       {
         "name": "root",

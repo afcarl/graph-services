@@ -31,11 +31,8 @@ class GtLayoutService(cxmate.Service):
         parameter = {p: params[p] for p in layout["parameter"]}
 
         g = Adapter.to_graph_tool(input_stream)
-        if params["with-position"]:
-            pos = layout["function"](g[0], **parameter)
-            return Adapter.from_graph_tool(g, pos)
-        else:
-            return Adapter.from_graph_tool(g)
+        pos = layout["function"](g[0], **parameter)
+        return Adapter.from_graph_tool(g, pos, params["only-layout"])
 
 
 if __name__ == "__main__":

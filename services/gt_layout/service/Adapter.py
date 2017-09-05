@@ -94,7 +94,7 @@ class Adapter(cxmate.Adapter):
 
 
     @staticmethod
-    def from_graph_tool(networks, pos=None):
+    def from_graph_tool(networks, pos=None, only_layout=False):
         """
         Creates a CX element generator from a list of graph-tool objects
 
@@ -106,10 +106,11 @@ class Adapter(cxmate.Adapter):
             return g.vp.id[int(node)] if "id" in g.vp else int(node)
 
         for network in networks:
-
             graph_label = network.gp.label if "label" in network.gp else 'out_net'
             builder = NetworkElementBuilder(graph_label)
             edge_num = -1
+            if only_layout:
+                break
 
             for node in network.vertices():
                 attrs = network.vp
