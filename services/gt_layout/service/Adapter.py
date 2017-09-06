@@ -24,7 +24,7 @@ class Adapter(cxmate.Adapter):
 
     @staticmethod
     def read_graph_tool(ele_iter):
-        network = gt.Graph(directed=False)
+        network = gt.Graph(directed=True)
         attrs = []
         edges = {}
         nodes = {}
@@ -124,9 +124,9 @@ class Adapter(cxmate.Adapter):
                     if k not in ('name', 'id'):
                         yield builder.NodeAttribute(node_id, k, v[node])
 
-            for source_node, target_node in network.edges():
+            for edge in network.edges():
+                source_node, target_node = edge.source(), edge.target()
                 edge_num += 1
-                edge = network.edge(source_node, target_node)
                 attrs = network.ep
                 sourceId = get_node_id(network, source_node)
                 targetId = get_node_id(network, target_node)
