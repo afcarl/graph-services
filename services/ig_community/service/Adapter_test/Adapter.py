@@ -99,7 +99,7 @@ class IgraphAdapter(cxmate.Adapter):
                 yield builder.Edge(attrs.get('id', edge.index), sourceId, targetId, attrs.get('interaction', ''))
 
                 for k, v in attrs.items():
-                    if k not in ('interaction', 'id'):
+                    if k not in ('interaction', 'id') and v is not None:
                         yield builder.EdgeAttribute(attrs.get('id', edge.index), k, v)
 
             for attrs_key in network.attributes():
