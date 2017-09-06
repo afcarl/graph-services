@@ -1,0 +1,70 @@
+{
+  "general": {
+    "location": "0.0.0.0:3000",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "ig-layout-service:8080",
+    "title": "igraph service",
+    "version": "1.0.0",
+    "author": "Ayato Shimada",
+    "email": "",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Simple service applying basic graph layout algorithm",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [{
+        "name": "weights",
+        "default": "None",
+        "description": "edge weights to be used. Can be a sequence or iterable or even an edge attribute name."
+      }, {
+      "name": "maxiter",
+      "default": "500",
+      "description": "the number of iterations to perform.",
+      "type" : "integer"      
+    }, {
+      "name": "maxdelta",
+      "default": "None",
+      "description": "the maximum distance to move a vertex in an iteration. The default is the number of vertices."
+    }, {
+      "name": "area",
+      "default": "None",
+      "description": "the area of the square on which the vertices will be placed. The default is the square of the number of vertices."
+    }, {
+      "name": "coolexp",
+      "default": "1.5",
+      "description": "The cooling exponent of the simulated annealing. The default is 1.5.",
+      "type" : "number"      
+    }, {
+      "name": "repulserad",
+      "default": "None",
+      "description": "determines the radius at which vertex-vertex repulsion cancels out attraction of adjacent vertices. The default is the number of vertices^3."
+    }, {
+      "name": "seed",
+      "default": "None",
+      "description": "if None, uses a random starting layout for the algorithm. If a matrix (list of lists), uses the given matrix as the starting position."
+    }, {
+      "name": "dim",
+      "default": "2",
+      "description": "the desired number of dimensions for the layout. dim=2 means a 2D layout, dim=3 means a 3D layout.",
+      "type" : "integer"
+    }],
+    "input": [{
+      "label": "in_net",
+      "description": "In net",
+      "aspects": ["nodes", "edges"]
+    }],
+
+    "singletonInput": true,
+
+    "output": [{
+      "label": "out_net",
+      "description": "Network attributes",
+      "aspects": ["cartesianLayout"]
+    }],
+    "singletonOutput": true
+  }
+}
