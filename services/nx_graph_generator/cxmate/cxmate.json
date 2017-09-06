@@ -94,7 +94,7 @@
       {
         "label": "My output network",
         "description": "An input network with heat values attached to nodes",
-        "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes"]
+        "aspects": ["networkAttributes"]
       }
     ],
     "singletonInput": true,
