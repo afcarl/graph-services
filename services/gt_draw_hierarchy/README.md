@@ -23,7 +23,7 @@ You can select a layout by adding query-string `layout`.
 The default value is `radial`
 
 e.g. 
-` curl --data "@sample.cx" -H "Content-type: application/json" "localhost?layout-name=sfdp_layout" | jq ".data" 
+` curl --data "@sample.cx" -H "Content-type: application/json" "localhost?layout=radial" | jq ".data" 
 `
 
 Layout names you can select are below.
