@@ -23,14 +23,17 @@ class IgStatisticsService(cxmate.Service):
             if params['type'] == 'label_propagation':
                 del params['type']
                 cluster = net.community_label_propagation(**params)
-                net.vs['cluster'] = cluster.membership
+                net.vs['community'] = cluster.membership
             elif params['type'] == 'optimal_modularity':
                 cluster = net.community_optimal_modularity(weights=params['weights'])
-                net.vs['cluster'] = cluster.membership
+                net.vs['community'] = cluster.membership
                 net['modularity'] = cluster.modularity
 
-        return IgraphAdapter.from_igraph(ig_networks)
+            for edge in net.es:
+                if cluster.membership[edge.source] == cluster.membership[edge.target]:
+                    edge['community'] = cluster.membership[edge.source]
 
+        return IgraphAdapter.from_igraph(ig_networks)
 
 if __name__ == "__main__":
 
