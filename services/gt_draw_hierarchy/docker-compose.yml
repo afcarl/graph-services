@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  gt-draw-hierarchy-service:
+    build: ./service
+    image: "gt-draw-hierarchy-service"
+
+  cxmate:
+    build: ./cxmate
+    image: "gt-draw-hierarchy-cxmate"
+    ports:
+     - "80:80"
+    links:
+     - gt-draw-hierarchy-service

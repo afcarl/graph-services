@@ -1,0 +1,46 @@
+{
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "gt-draw-hierarchy-service:8080",
+    "title": "graph-tool service",
+    "version": "1.0.0",
+    "author": "Mitsuhrio ETO",
+    "email": "frn.fnts@gmail.com",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Simple service applying basic graph layout algorithm",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [{
+        "name": "layout",
+        "default": "radial",
+        "description": "Layout algorithm name"
+      },
+      {
+        "name": "only-layout",
+        "default": "True",
+        "type": "boolean",
+        "description": "Whether output is containing network."
+      }
+    ],
+    "input": [{
+      "label": "out_net",
+      "description": "In net",
+      "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes", "networkAttributes"]
+    }],
+
+    "singletonInput": true,
+
+    "output": [{
+      "label": "out_net",
+      "description": "Layout data",
+      "aspects": ["nodes", "edges", "nodeAttributes", "edgeAttributes", "networkAttributes", "cartesianLayout"]
+    }],
+    "singletonOutput": true
+  }
+}
