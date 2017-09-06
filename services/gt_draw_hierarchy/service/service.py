@@ -15,6 +15,8 @@ class GtDrawHierarchyService(cxmate.Service):
         self.parameter = ["layout"]
 
     def propagate_label(self, tgraph, sgraph):
+        if 'label' not in sgraph.vp:
+            return
         if 'label' not in tgraph.vp:
             tgraph.vp.label = tgraph.new_vp("string")
         attrs = {}
