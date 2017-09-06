@@ -18,29 +18,22 @@ graph-tool is a high-performance graph library using Boost Graph.  This is an ex
 # REST API Specification
 
 ## Path Parameters
-### layout-name
-You can select a layout by adding query-string `layout-name`.
-The default value is `sfdp_layout`
+### layout
+You can select a layout by adding query-string `layout`.
+The default value is `radial`
 
 e.g. 
 ` curl --data "@sample.cx" -H "Content-type: application/json" "localhost?layout-name=sfdp_layout" | jq ".data" 
 `
 
 Layout names you can select are below.
-- `sfdp_layout`
-- `fruchterman_reingold_layout`
-- `arf_layout`
-- `radial_tree_layout`
-- `planar_layout`
-- `random_layout`
+- `sfdp`
+- `radial`
 
 ### only-layout
 `only-layout` indicates whether the output is only layout or with network itself.
 The default value is `True`.
 
-### root
-If you select `radial_tree_layout`, you can select root node by `root` parameter.
-The default value is `0`.
 
 ## Input
 Required CX input fields are:
