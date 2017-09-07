@@ -12,6 +12,7 @@ from Adapter import Adapter
 
 class GtDrawHierarchyService(cxmate.Service):
     def __init__(self):
+        super(cxmate.Service, self).__init__()
         self.parameter = ["layout"]
 
     def propagate_label(self, tgraph, sgraph):
@@ -34,12 +35,39 @@ class GtDrawHierarchyService(cxmate.Service):
         node_num = len(bs[0])
         upper_level = range(node_num)
         for i in range(n):
+            label_name = "clabel" + str(i)
             cl = t.new_vp("int")
-            for node_id in range(node_num):
+            cl.a.fill(-2)
+            for node_id in range(node_num):  # for original nodes
                 cl[node_id] = bs[i][upper_level[node_id]]
             upper_level = cl
-            label_name = "clabel" + str(i)
+
+            # for not original nodes.
+            for edge in t.edges():
+                target_label = cl[edge.target()]
+                source_label = cl[edge.source()]
+                if source_label == -2:  # first edge
+                    cl[edge.source()] = target_label
+                elif source_label in (-1, target_label):
+                    pass  # already cl[edge.source()] = -1
+                else:  # source node is connected with different clusters. i.e. it is a branch.
+                    cl[edge.source()] = -1
+
+            # for edges
+            cle = t.new_ep("int")
+            for edge in t.edges():
+                source_label = cl[edge.source()]
+                cle[edge] = source_label
             t.vp[label_name] = cl
+            t.ep[label_name] = cle
+
+    def add_edge_id(self, t):
+        if "id" not in t.ep:
+            t.ep.id = t.new_ep("int")
+            t.ep.label = t.new_ep("int")
+        for i, edge in enumerate(t.edges()):
+            t.ep.id[edge] = i
+            t.ep.label[edge] = i
  
     def process(self, params, input_stream):
         logger.warn(params)
@@ -48,6 +76,7 @@ class GtDrawHierarchyService(cxmate.Service):
         g = Adapter.to_graph_tool(input_stream)
         state = gt.minimize_nested_blockmodel_dl(g[0], deg_corr=True)
         pos, t, tpos = gt.draw_hierarchy(state, output="output.pdf", **parameter)
+        self.add_edge_id(t)
         self.propagate_label(t, g[0])
         self.copy_clabels(t, state)
         # return Adapter.from_graph_tool(g, pos, params["only-layout"])

@@ -120,9 +120,9 @@ class Adapter(cxmate.Adapter):
                     attrs.name = network.new_vp('string')  # make sure name exists
                 yield builder.Node(node_id, attrs.name[node])
 
-                for k, v in attrs.items():
-                    if k not in ('name', 'id'):
-                        yield builder.NodeAttribute(node_id, k, v[node])
+                for attr_name, pmap in attrs.items():
+                    if attr_name not in ('name', 'id'):
+                        yield builder.NodeAttribute(node_id, attr_name, pmap[node])
 
             for edge in network.edges():
                 source_node, target_node = edge.source(), edge.target()
@@ -136,9 +136,9 @@ class Adapter(cxmate.Adapter):
                     attrs.interaction = network.new_ep('string')  # make sure interaction exists
                 yield builder.Edge(edge_id, sourceId, targetId, attrs.interaction[edge])
 
-                for k, v in attrs.items():
-                    if k not in ('interaction', 'id'):
-                        yield builder.EdgeAttribute(edge_id, k, v[edge])
+                for attr_name, pmap in attrs.items():
+                    if attr_name not in ('interaction', 'id'):
+                        yield builder.EdgeAttribute(edge_id, attr_name, pmap[edge])
 
             for k in network.gp.keys():
                 yield builder.NetworkAttribute(k, network.gp[k])
