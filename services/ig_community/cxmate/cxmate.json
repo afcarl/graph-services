@@ -7,45 +7,64 @@
   },
   "service": {
     "location": "ig-community-service:8080",
-    "title": "igraph service",
+    "title": "igraph community detection service",
     "version": "1.0.0",
     "author": "Ayato Shimada",
     "email": "",
     "website": "",
     "repository": "https://github.com/idekerlab/graph-services",
-    "description": "Simple service applying basic graph layout algorithm",
+    "description": "Collection of services detecting communities for a given network",
     "license": "MIT",
     "language": "Python",
-    "parameters": [{
+    "parameters": [
+      {
         "name": "type",
-        "default": "label_propagation",
-        "description": "type of community algorithm"
-        }, {
+        "default": "fastgreedy",
+        "description": "Name of community detection algorithm"
+      },
+      {
         "name": "weights",
         "default": "None",
         "description": "name of an edge attribute or a list containing edge weights."
-        }, {
+      },
+      {
         "name": "initial",
         "default": "None",
         "description": "name of a vertex attribute or a list containing the initial vertex labels."
-        }, {
+      },
+      {
+        "name": "clusters",
+        "default":"-1",
+        "description": "(Optional) Desired number of communities.",
+        "type": "integer"
+      },
+      {
         "name": "fixed",
         "default": "None",
         "description": "a list of booleans for each vertex. True corresponds to vertices whose labeling should not change during the algorithm."
-    }],
-    "input": [{
-      "label": "in_net",
-      "description": "In net",
-      "aspects": ["nodes", "edges"]
-    }],
-
+      }
+    ],
+    "input": [
+      {
+        "label": "in_net",
+        "description": "Input network to be used for community detection algorithms",
+        "aspects": [
+          "nodes",
+          "edges"
+        ]
+      }
+    ],
     "singletonInput": true,
-
-    "output": [{
-      "label": "out_net",
-      "description": "Network attributes",
-      "aspects": ["nodeAttributes"]
-    }],
+    "output": [
+      {
+        "label": "out_net",
+        "description": "Community membership list stored as node and edge attributes",
+        "aspects": [
+          "nodeAttributes",
+          "edgeAttributes"
+        ]
+      }
+    ],
     "singletonOutput": true
   }
 }
