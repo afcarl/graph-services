@@ -3,9 +3,11 @@ services:
 
   gt-layout-service:
     build: ./service
+    image: "gt-layout-service"
 
   cxmate:
     build: ./cxmate
+    image: "gt-layout-cxmate"
     ports:
      - "80:80"
     links:

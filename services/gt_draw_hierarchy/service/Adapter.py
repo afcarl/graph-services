@@ -4,9 +4,9 @@ import itertools
 from graph_tool import all as gt
 from NetworkElementBuilder import NetworkElementBuilder
 
-class Adapter(cxmate.Adapter):
+class GraphToolAdapter(cxmate.Adapter):
     def __init__(self, arg):
-        super(Adapter, self).__init__()
+        super(GraphToolAdapter, self).__init__()
         
     @staticmethod
     def to_graph_tool(ele_iter):
@@ -18,7 +18,7 @@ class Adapter(cxmate.Adapter):
         """
         networks = []
         while ele_iter:
-            network, ele_iter = Adapter.read_graph_tool(ele_iter)
+            network, ele_iter = GraphToolAdapter.read_graph_tool(ele_iter)
             networks.append(network)
         return networks
 
@@ -55,22 +55,22 @@ class Adapter(cxmate.Adapter):
                 network.ep.interaction[new_edge] = edge.interaction
             elif ele_type == 'nodeAttribute':
                 attr = ele.nodeAttribute
-                value = Adapter.parse_value(attr)
-                attr_type = Adapter.get_gt_type(value)
+                value = GraphToolAdapter.parse_value(attr)
+                attr_type = GraphToolAdapter.get_gt_type(value)
                 if attr.name not in network.vp:
                     network.vertex_properties[attr.name] = network.new_vertex_property(attr_type)
                 network.vertex_properties[attr.name][nodes[attr.nodeId]] = value
             elif ele_type == 'edgeAttribute':
                 attr = ele.edgeAttribute
-                value = Adapter.parse_value(attr)
-                attr_type = Adapter.get_gt_type(value)
+                value = GraphToolAdapter.parse_value(attr)
+                attr_type = GraphToolAdapter.get_gt_type(value)
                 if attr.name not in network.ep:
                     network.ep[attr.name] = network.new_ep(attr_type)
                 network.ep[attr.name][edges[attr.edgeId]] = value
             elif ele_type == 'networkAttribute':
                 attr = ele.networkAttribute
-                value = Adapter.parse_value(attr)
-                attr_type = Adapter.get_gt_type(value)
+                value = GraphToolAdapter.parse_value(attr)
+                attr_type = GraphToolAdapter.get_gt_type(value)
                 if attr.name not in network.gp:
                     network.gp[attr.name] = network.new_graph_property(attr_type)
                 network.gp[attr.name] = value
@@ -87,14 +87,14 @@ class Adapter(cxmate.Adapter):
             gt_type = python_type
         elif python_type == 'list' and len(x) > 0:
             if is_vector == False:  # avoid nested vector type
-                gt_type = Adapter.get_gt_type(x[0], is_vector=True)
+                gt_type = GraphToolAdapter.get_gt_type(x[0], is_vector=True)
         if gt_type == 'object' and is_vector:
             return 'object'
         return gt_type if not is_vector else 'vector<{t}>'.format(t=gt_type)
 
 
     @staticmethod
-    def from_graph_tool(networks, pos=None, only_layout=False):
+    def from_graph_tool(networks, poss=None, only_layout=False):
         """
         Creates a CX element generator from a list of graph-tool objects
 
@@ -105,7 +105,7 @@ class Adapter(cxmate.Adapter):
         def get_node_id(g, node):
             return g.vp.id[int(node)] if "id" in g.vp else int(node)
 
-        for network in networks:
+        for network, pos in itertools.zip_longest(networks, poss):
             graph_label = network.gp.label if "label" in network.gp else 'out_net'
             builder = NetworkElementBuilder(graph_label)
             edge_num = -1

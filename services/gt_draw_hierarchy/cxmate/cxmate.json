@@ -13,7 +13,7 @@
     "email": "frn.fnts@gmail.com",
     "website": "",
     "repository": "https://github.com/idekerlab/graph-services",
-    "description": "Simple service applying basic graph layout algorithm",
+    "description": "A service for getting a hierarchically clustered network with layout",
     "license": "MIT",
     "language": "Python",
     "parameters": [{

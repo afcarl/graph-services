@@ -1,4 +1,4 @@
-# graph-tool Service Example
+# graph-tool draw_hierarchy Service
 ## Introduction
 graph-tool is a high-performance graph library using Boost Graph.  This is an example service to perform layout using graph-tool.
 
