@@ -1,5 +1,6 @@
 import cxmate
 import logging
+import seaborn as sns
 from Adapter import IgraphAdapter
 from handlers import CommunityDetectionHandlers
 
@@ -12,7 +13,8 @@ OUTPUT_LABEL = 'out_net'
 # Community detection algorithm name
 ALGORITHM_TYPE = 'type'
 
-
+# Palette name
+PALETTE_NAME = 'palette'
 
 class IgCommunityDetectionService(cxmate.Service):
     """
@@ -26,6 +28,11 @@ class IgCommunityDetectionService(cxmate.Service):
         logging.debug(params)
         algorithm_type = params[ALGORITHM_TYPE]
         del params[ALGORITHM_TYPE]
+        palette = params[PALETTE_NAME]
+        del params[PALETTE_NAME]
+
+        # Set color palette
+        sns.set_palette(palette=palette)
 
         # Replace string None to Python None data type
         for k, v in params.items():

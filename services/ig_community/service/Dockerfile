@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install git
 RUN mkdir /services
 WORKDIR /services
 
-RUN pip install numpy scipy python-igraph
+RUN pip install numpy scipy python-igraph seaborn
 
 # TODO: replace with the new cxmate SDK.
 RUN git clone https://github.com/keiono/cxmate-py.git

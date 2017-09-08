@@ -23,6 +23,11 @@
         "description": "Name of community detection algorithm"
       },
       {
+        "name": "palette",
+        "default": "husl",
+        "description": "Name of color code for painting in Cytoscape"
+      },
+      {
         "name": "weights",
         "default": "None",
         "description": "name of an edge attribute or a list containing edge weights."
