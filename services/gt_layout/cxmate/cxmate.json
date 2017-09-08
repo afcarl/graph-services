@@ -26,8 +26,12 @@
         "default": "True",
         "type": "boolean",
         "description": "Whether output is containing network."
-      },
-      {
+      },{
+        "name": "root",
+        "default": "0",
+        "type": "integer",
+        "description": "The root of the radial tree."
+      },{
         "name": "vweight",
         "default": "vweight",
         "type": "string",
