@@ -9,8 +9,8 @@
     "location": "gt-layout-service:8080",
     "title": "graph-tool service",
     "version": "1.0.0",
-    "author": "Keiichiro Ono",
-    "email": "kono@ucsd.edu",
+    "author": "Mitsuhrio ETO",
+    "email": "frn.fnts@gmail.com",
     "website": "",
     "repository": "https://github.com/idekerlab/graph-services",
     "description": "Simple service applying basic graph layout algorithm",
@@ -18,7 +18,7 @@
     "language": "Python",
     "parameters": [{
         "name": "layout-name",
-        "default": "sfdp_layout",
+        "default": "default",
         "description": "Layout algorithm name"
       },
       {
@@ -28,10 +28,52 @@
         "description": "Whether output is containing network."
       },
       {
-        "name": "root",
-        "default": "0",
-        "type": "integer",
-        "description": "The root of the radial tree."
+        "name": "vweight",
+        "default": "vweight",
+        "type": "string",
+        "description": "Attribute name of vertex weight "
+      }, 
+      {
+        "name": "eweight",
+        "default": "eweight",
+        "type": "string",
+        "description": "Attribute name of edge weight"
+      }, 
+      {
+        "name": "pin",
+        "default": "pin",
+        "type": "string",
+        "description": "A name of vertex attribute with boolean values, which, if given, specify the vertices which will not have their positions modified."
+      }, 
+      {
+        "name": "groups",
+        "default": "groups",
+        "type": "string",
+        "description": "A name of vertex attribute with group assignments. Vertices belonging to the same group will be put close together."
+      }, 
+      {
+        "name": "pos",
+        "default": "pos",
+        "type": "string",
+        "description": "A name of initial vertex layout attribute. If not provided, it will be randomly chosen."
+      }, 
+      {
+        "name": "weight",
+        "default": "weight",
+        "type": "string",
+        "description": "Attribute name of an edge attribute with the respective weights"
+      }, 
+      {
+        "name": "rel_order",
+        "default": "rel_order",
+        "type": "string",
+        "description": "Attribute name of relative order of the nodes at each respective branch."
+      }, 
+      {
+        "name": "node_weight",
+        "default": "node_weight",
+        "type": "string",
+        "description": "Attribute name of the relative spacing between leafs will correspond to the node weights."
       }
     ],
     "input": [{
