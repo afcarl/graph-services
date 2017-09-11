@@ -7,8 +7,11 @@ from directed_nx_adapter import DiAdapter
 class MyService(cxmate.Service):
 
     def process(self, params, input_stream):
+        """
+        CI service for creating node positions for the given network data using Graphviz.
+        """
         for k, v in params.items():
-            if v == 'None':
+            if v == str(None):
                 params[k] = None
 
         logging.warn(params)
@@ -19,15 +22,23 @@ class MyService(cxmate.Service):
         else:
             # network is non-directed graph
             network = DiAdapter.to_networkx(input_stream)
-
         del params['is_directed']
 
         for net in network:
             net.graph['label'] = 'Output'
+
+            dict_parameters = ['personalization', 'dangling', 'nstart']
+            for parameter in dict_parameters:
+                # dict_parameters can be used the name of nodeAttribute
+                if params[parameter] is not None:
+                    params[parameter] = networkx.get_node_attributes(net, params[parameter])
+                    logging.warn(net)
+
             pr = networkx.pagerank(net, **params)
             networkx.set_node_attributes(net, 'pagerank', pr)
 
         return DiAdapter.from_networkx(network)
+
 
 if __name__ == "__main__":
     myService = MyService()

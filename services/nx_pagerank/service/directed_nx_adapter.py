@@ -5,6 +5,9 @@ import logging
 
 
 class DiAdapter(cxmate.Adapter):
+    """
+    Static methods to convert directed networkX formats to and from CX stream iterators
+    """
 
     @staticmethod
     def to_directed_networkx(ele_iter):
