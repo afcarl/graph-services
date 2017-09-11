@@ -22,12 +22,10 @@ class TestNxLayoutService(unittest.TestCase):
 
         self.assertEqual(node_cnt1, node_cnt2, msg='the number of node {} != {}'.format(node_cnt1, node_cnt2))
 
-        for k1, node1 in node_list2.items():
-            pos1 = (node1['x'], node1['y'], node1['z'])
-            for k2, node2 in node_list2.items():
-                pos2 = (node2['x'], node2['y'], node2['z'])
-                if k1 != k2:
-                    self.assertNotEqual(pos1, pos2, msg='the position of node {} == {}'.format(pos1, pos2))
+        pos_set = []
+        for node in node_list2.values():
+            pos_set.append((node['x'], node['y'], node['z']))
+        self.assertEqual(len(set(pos_set)), node_cnt2, msg='There are nodes with the same position')
 
     def testNodePosition1_dot(self):
         self.testNodePosition1(filename='../../sample-data/sample.cx', parameter='?prog=dot')
@@ -43,7 +41,7 @@ class TestNxLayoutService(unittest.TestCase):
 
     def testNodePosition3(self):
         self.testNodePosition1(filename='../../sample-data/sample3.cx')
-        
+
 
 def countNode(cx):
     node_list = {}
