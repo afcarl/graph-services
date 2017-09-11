@@ -16,17 +16,11 @@
 ## Path Parameters
 
 ### _prog_
-Name of Graphviz layout program
+Name of Graphviz layout program.  
+If _twopi_ is selected, 'root' value in networkAttribute is used for root node.
 
 #### Default value
 **neato**
-
-### _root_
-Root node for twopi layout
-
-#### Default value
-**None**
-
 
 #### Available values
 * neato
@@ -38,13 +32,15 @@ Root node for twopi layout
 
 Example:
 
-```http://localhost:8080?neato=dot```
+```http://localhost:8080?prog=dot```
 
 ## Body
 Required CX input fields are:
 
 * nodes
 * edges
+* networkAttributes
+
 
 ## Output
 
