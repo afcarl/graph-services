@@ -8,6 +8,9 @@ DEFAULT_HANDLER = 'default'
 # Attribute name for the communities
 COMMUNITY = 'community'
 
+# Palette name
+PALETTE_NAME = 'palette'
+
 
 class CommunityDetectionHandlers():
     """
@@ -63,7 +66,6 @@ class CommunityDetectionHandlers():
         parameters_list = ['weights']
         params = {i: params[i] for i in parameters_list}
         params['weights'] = net.es[params['weights']] if params['weights'] is not None else None
-        logging.warning(params)
 
         cluster = net.community_optimal_modularity(**params)
         net['modularity'] = cluster.modularity
@@ -108,5 +110,6 @@ class CommunityDetectionHandlers():
         net.vs[COMMUNITY] = cluster.membership
         sns.set_palette(palette=palette, n_colors=len(cluster.sizes()))
         color = sns.color_palette(n_colors=len(cluster.sizes())).as_hex()
+        logging.warning(color)
         for node in net.vs:
             node[COMMUNITY+'.color'] = color[node[COMMUNITY]]

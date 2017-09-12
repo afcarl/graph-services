@@ -55,7 +55,9 @@
         "description": "Input network to be used for community detection algorithms",
         "aspects": [
           "nodes",
-          "edges"
+          "edges",
+          "nodeAttributes",
+          "edgeAttributes"
         ]
       }
     ],
