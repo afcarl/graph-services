@@ -11,16 +11,15 @@ graph-tool is a high-performance graph library using Boost Graph.  This is an ex
 1. From this directory, type ```docker-compose build && docker-compose up```
 1. ```curl -d "@./sample-data/sample.cx" -H "Content-Type: application/json" -X POST localhost | jq .```
 1. Now you should get a network with some new network attributes.
-
+TODO: more parameter
 
 
 
 # REST API Specification
 
 ## Path Parameters
-### layout
+### layout (string, default: `radial`)
 You can select a layout by adding query-string `layout`.
-The default value is `radial`
 
 e.g. 
 ` curl --data "@sample.cx" -H "Content-type: application/json" "localhost?layout=radial" | jq ".data" 
@@ -30,9 +29,35 @@ Layout names you can select are below.
 - `sfdp`
 - `radial`
 
-### only-layout
+### beta (int, default: `8`)
+Edge bundling strength.
+
+### deg_order (boolean, default: `True`)
+If True, the vertices will be ordered according to degree inside each group.
+
+### deg_size (boolean, default: `True`)
+If True, the (total) node degrees will be used for the default vertex sizes.
+
+### vsize_scale (number, default: `1`)
+Multiplicative factor for the default vertex sizes.
+
+### hsize_scale (number, default: `1`)
+Multiplicative factor for the default sizes of the hierarchy nodes.
+
+### hshortcuts (int, default: `0`)
+Include shortcuts to the number of upper layers in the hierarchy determined by this parameter.
+
+### hide (int, default: `0`)
+Hide upper levels of the hierarchy.
+
+### bip_aspect (number, default: `1`)
+If layout == bipartite, this will define the aspect ratio of layout.
+
+### empty_branches (boolean, default: `False`)
+If empty_branches == False, dangling branches at the upper layers will be pruned.
+
+### only-layout (boolean, default: `True`)
 `only-layout` indicates whether the output is only layout or with network itself.
-The default value is `True`.
 
 
 ## Input
@@ -52,3 +77,12 @@ Required CX input fields are:
 - `networkAttributes`
 - `cartesianLayout`
 
+## Service Unit Test
+From this directory, type below commands.
+1. `docker build -t gt_draw_hierarchy_test -f ./service/ServiceTestDockerfile ./service`
+2. `docker run gt_draw_hierarchy_test`
+
+## Adapter Unit Test
+From this directory, type below commands.
+1. `docker build -t gt_adapter_test -f ./service/AdapterTestDockerfile ./service`
+2. `docker run gt_adapter_test`

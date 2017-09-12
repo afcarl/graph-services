@@ -6,6 +6,6 @@ class NetworkElementBuilder(cxmate.service.NetworkElementBuilder):
         ele = self.new_element()
         coord = ele.CartesianCoordinate
         coord.nodeId = node_id
-        coord.x = position[0]*2000
-        coord.y = position[1]*2000
+        coord.x = position[0] * 100
+        coord.y = position[1] * 100
         return ele

@@ -4,70 +4,49 @@ from collections import defaultdict
 
 import graph_tool
 from Adapter import GraphToolAdapter
-from service import GtLayoutService
+from service import GtDrawHierarchyService
 
-class TestGraphToolLayoutService(unittest.TestCase):
+class TestGraphToolDrawHierarchyService(unittest.TestCase):
     def test_all_nodes_have_layout(self):
-        net1, edgeList = create_mock_graph_tool(num_nodes=100, num_edges=300)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        net1, edgeList = create_mock_graph_tool(num_nodes=30, num_edges=100)
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        gs, poss = GLS.process_graphs(params, [net1])
+        gs, poss = GDHS.process_graphs(params, [net1])
         cx = GraphToolAdapter.from_graph_tool(gs,  poss)
         b, ns, ls = has_corresponding_layout(cx)
         assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
 
 
     def test_all_algorithms(self):
-        net1, edgeList = create_mock_planar(dim=[10, 15])
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 10, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        net1, edgeList = create_mock_planar(dim=[5, 5])
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        layout_names = ["sfdp_layout", "fruchterman_reingold_layout", "arf_layout", "radial_tree_layout", "planar_layout", "random_layout"]
-        # layout_names = ["sfdp_layout", "fruchterman_reingold_layout", "arf_layout", "radial_tree_layout", "random_layout"]
+        layout_names = ["sfdp", "radial", "bipartite"]
         for l in layout_names:
-            params['layout-name'] = l
-            gs, poss = GLS.process_graphs(params, [net1])
+            params['layout'] = l
+            gs, poss = GDHS.process_graphs(params, [net1])
             cx = GraphToolAdapter.from_graph_tool(gs,  poss)
             b, ns, ls = has_corresponding_layout(cx)
             assert b, "Set of Node id and Set of Layout are different. Algorithm: %s <node %s> != <layout %s>" % (l, ns, ls)
 
     def test_nodes_have_unique_position(self):
-        net1, edgeList = create_mock_graph_tool(num_nodes=100, num_edges=300)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        net1, edgeList = create_mock_graph_tool(num_nodes=30, num_edges=100)
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        gs, poss = GLS.process_graphs(params, [net1])
+        gs, poss = GDHS.process_graphs(params, [net1])
         cx = GraphToolAdapter.from_graph_tool(gs,  poss)
         b, dp = has_unique_position(cx)
         assert b, "There are same position nodes.  %s" % (dp)
-
-    def test_with_parameter(self):
-        net1, edgeList = create_mock_graph_tool(num_nodes=100, num_edges=300)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
-
-        params["vweight"] = "vw"
-        params["eweight"] = "ew"
-        net1.vp.vw = net1.new_vp("int")
-        net1.ep.ew = net1.new_ep("int")
-        for v in net1.vertices():
-            net1.vp.vw[v] = random.randint(0, 100)
-        for edge in net1.edges():
-            net1.ep.ew[edge] = random.randint(0, 100)
-        gs, poss = GLS.process_graphs(params, [net1])
-        cx = GraphToolAdapter.from_graph_tool(gs,  poss)
-        b, dp = has_unique_position(cx)
-        assert b, "There are same position nodes.  %s" % (dp)
-        b, ns, ls = has_corresponding_layout(cx)
-        assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
 
     def test_empty_grpah(self):
         net1, edgeList = create_mock_graph_tool(num_nodes=0, num_edges=0)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        gs, poss = GLS.process_graphs(params, [net1])
+        gs, poss = GDHS.process_graphs(params, [net1])
         cx = GraphToolAdapter.from_graph_tool(gs,  poss)
         b, dp = has_unique_position(cx)
         assert b, "There are same position nodes.  %s" % (dp)
@@ -76,10 +55,10 @@ class TestGraphToolLayoutService(unittest.TestCase):
  
     def test_1node_grpah(self):
         net1, edgeList = create_mock_graph_tool(num_nodes=1, num_edges=0)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        gs, poss = GLS.process_graphs(params, [net1])
+        gs, poss = GDHS.process_graphs(params, [net1])
         cx = GraphToolAdapter.from_graph_tool(gs,  poss)
         b, dp = has_unique_position(cx)
         assert b, "There are same position nodes.  %s" % (dp)
@@ -88,13 +67,23 @@ class TestGraphToolLayoutService(unittest.TestCase):
 
     def test_large_graph(self):
         net1, edgeList = create_mock_graph_tool(num_nodes=1000, num_edges=3000)
-        GLS = GtLayoutService()
-        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
 
-        gs, poss = GLS.process_graphs(params, [net1])
+        gs, poss = GDHS.process_graphs(params, [net1])
         cx = GraphToolAdapter.from_graph_tool(gs,  poss)
         b, ns, ls = has_corresponding_layout(cx)
         assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
+
+    def test_clabel(self):
+        net1, edgeList = create_mock_graph_tool(num_nodes=30, num_edges=100)
+        GDHS = GtDrawHierarchyService()
+        params = {'layout': 'radial', 'pos': 'pos', 'beta': 8, 'deg_order': True, 'deg_size': True, 'vsize_scale': 1.0, 'hsize_scale': 1.0, 'hshortcuts': 0, 'hide': 0, 'bip_aspect': 1.0, 'empty_branches': False, 'only-layout': True}
+
+        gs, poss = GDHS.process_graphs(params, [net1])
+        cx = GraphToolAdapter.from_graph_tool(gs,  poss)
+        check_clabel(cx)
+
 
 
 def has_corresponding_layout(cx):
@@ -136,6 +125,43 @@ def has_unique_position(cx):
             pos_dict[p].add(node_id)
     duplicate_positions = {p: s for p, s in pos_dict.items() if len(s) > 1}
     return not duplicate_positions, duplicate_positions
+
+
+def check_clabel(cx):
+    """
+    params: cx generator
+    Check all clabel >= -1.
+    Check numer of clabels == number of nodes
+    """
+    node_clabels = defaultdict(int)
+    edge_clabels = defaultdict(int)
+    node_num = 0
+    edge_num = 0
+
+    for aspect in cx:
+        which = aspect.WhichOneof('element')
+        if which == 'node':
+            node_num += 1
+        elif which == 'nodeAttribute':
+            attr = aspect.nodeAttribute
+            if not attr.name.startswith("clabel"):
+                continue
+            value = GraphToolAdapter.parse_value(attr)
+            assert value >= -1, "node clabel value is less than -1 value: %s" % (value)
+            node_clabels[attr.name] += 1
+        elif which == 'edge':
+            edge_num += 1
+        elif which == 'edgeAttribute':
+            attr = aspect.edgeAttribute
+            if not attr.name.startswith("clabel"):
+                continue
+            value = GraphToolAdapter.parse_value(attr)
+            assert value >= -1, "edge clabel value is less than -1 value: %s" % (value)
+            edge_clabels[attr.name] += 1
+    for clabel_name, clabel_count in node_clabels.items():
+        assert clabel_count == node_num, "number of node clabels does not equal to number of nodes. clabel: %s, node: %s" % (clabel_count, node_num)
+    for clabel_name, clabel_count in edge_clabels.items():
+        assert clabel_count == edge_num, "number of edge clabels does not equal to number of edges. clabel: %s, node: %s" % (clabel_count, edge_num)
 
 
 def create_mock_graph_tool(label='network_label', num_nodes=100, num_edges=100, data={}):
