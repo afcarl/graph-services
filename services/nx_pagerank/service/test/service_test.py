@@ -32,6 +32,12 @@ class TestNxLayoutService(unittest.TestCase):
     def testNodePosition3(self):
         self.testNodePosition1(filename='../../sample-data/sample3.cx', parameter='')
 
+    def testNodePositionEmptyNetwork(self):
+        self.testNodePosition1(filename='../../sample-data/empty.cx')
+
+    def testNodePositionOneNodeNetwork(self):
+        self.testNodePosition1(filename='../../sample-data/1node.cx')
+
 
 def countNode(cx):
     node_list = {}
