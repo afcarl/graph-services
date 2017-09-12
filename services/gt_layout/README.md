@@ -59,3 +59,12 @@ Required CX input fields are:
 - `networkAttributes`
 - `cartesianLayout`
 
+## Service Unit Test
+From this directory, type below commands.
+1. `docker build -t gt_layout_test -f ./service/ServiceTestDockerfile ./service`
+2. `docker run gt_layout_test`
+
+## Adapter Unit Test
+From this directory, type below commands.
+1. `docker build -t gt_adapter_test -f ./service/AdapterTestDockerfile ./service`
+2. `docker run gt_adapter_test`

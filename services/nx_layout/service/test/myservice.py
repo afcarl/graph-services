@@ -16,6 +16,8 @@ class NxLayoutService(cxmate.Service):
         CI service for creating node positions for the given network data using Graphviz.
         """
 
+        logging.debug(params)
+
         # Replace string None to Python None data type
         for k, v in params.items():
             if v == str(None):
@@ -24,28 +26,22 @@ class NxLayoutService(cxmate.Service):
         networks = cxmate.Adapter.to_networkx(input_stream)
         nodedata_tmp = []
 
-        # For now, this service supports for single-graph only.
-        net = networks[0]
+        for net in networks:
+            net.graph['label'] = OUTPUT_LABEL
+            for n, nodedata in net.nodes_iter(data=True):
+                # Prevent duplication of attribute 'name'.
+                if 'name' in nodedata.keys():
+                    nodedata_tmp.append(nodedata['name'])
+                    del nodedata['name']
+            pos = graphviz_layout(net, **params)
 
-        net.graph['label'] = OUTPUT_LABEL
-        if params['prog'] == 'twopi' and 'root' in net.graph.keys():
-            # When 'twopi' is selected in parameter 'prog', root node is used 'root' in NetworkAttributes
-            params['root'] = net.graph['root']
-        for n, nodedata in net.nodes_iter(data=True):
-            # Prevent duplication of attribute 'name'.
-            if 'name' in nodedata.keys():
-                nodedata_tmp.append(nodedata['name'])
-                del nodedata['name']
-        logging.debug(params)
-        pos = graphviz_layout(net, **params)
+            # Set removed attribute 'name' again.
+            i = 0
+            for n, nodedata in net.nodes_iter(data=True):
+                nodedata['name'] = nodedata_tmp[i]
+                i += 1
 
-        # Set removed attribute 'name' again.
-        i = 0
-        for n, nodedata in net.nodes_iter(data=True):
-            nodedata['name'] = nodedata_tmp[i]
-            i += 1
-
-        return self.outputStream([net], pos)
+        return self.outputStream(networks, pos)
 
     def outputStream(self, networks, pos):
         """

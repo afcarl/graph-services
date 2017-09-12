@@ -9,7 +9,7 @@
     "location": "graphviz_layout:8080",
     "title": "Graphviz Layouts from NetworkX",
     "version": "1.0.0",
-    "author": "",
+    "author": "Ayato Shimada",
     "email": "",
     "website": "",
     "repository": "https://github.com/idekerlab/graph-services",
@@ -20,24 +20,26 @@
       "name" : "prog",
       "default" : "neato",
       "description" : "Name of Graphviz layout program"
-    },{
-      "name" : "root",
-      "default" : "None",
-      "description" : "Root node for twopi layout"
     } ],
     "input": [
       {
-        "label": "Input",
+        "label": "in_net",
         "description": "An input network with heat values attached to nodes",
-        "aspects": ["nodes", "edges"]
+        "aspects": [
+          "nodes",
+          "edges",
+          "networkAttributes"
+        ]
       }
     ],
     "singletonInput": true,
     "output": [
       {
-        "label": "Output",
+        "label": "out_net",
         "description": "An output network with new heats and a rank attribute created by diffusion",
-        "aspects": ["cartesianLayout"]
+        "aspects": [
+          "cartesianLayout"
+        ]
       }
     ],
     "singletonOutput": true

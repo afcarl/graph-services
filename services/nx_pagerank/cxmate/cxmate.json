@@ -30,7 +30,7 @@
     },{
       "name" : "personalization",
       "default" : "None",
-      "description" : "The “personalization vector” consisting of a dictionary with a key for every graph node and nonzero personalization value for each node. By default, a uniform distribution is used"
+      "description" : "The “personalization vector” consisting of a dictionary with a key for every graph node and nonzero personalization value for each node. The nodeAttribute can be used"
     },{
       "name" : "max_iter",
       "default" : "100",
@@ -44,21 +44,26 @@
     },{
       "name" : "nstart",
       "default" : "None",
-      "description" : "Starting value of PageRank iteration for each node"
+      "description" : "Starting value of PageRank iteration for each node. The nodeAttribute can be used."
     },{
       "name" : "weight",
-      "default" : "weight",
-      "description" : "Edge data key to use as weight. If None weights are set to 1"
+      "default" : "None",
+      "description" : "Edge data key to use as weight. The edgeAttribute can be used. If None weights are set to 1"
     },{
       "name" : "dangling",
       "default" : "None",
-      "description" : "The outedges to be assigned to any “dangling” nodes, i.e., nodes without any outedges. The dict key is the node the outedge points to and the dict value is the weight of that outedge. By default, dangling nodes are given outedges according to the personalization vector (uniform if not specified). This must be selected to result in an irreducible transition matrix (see notes under google_matrix). It may be common to have the dangling dict to be the same as the personalization dict"
+      "description" : "The outedges to be assigned to any “dangling” nodes, i.e., nodes without any outedges. The nodeAttribute can be used"
     } ],
     "input": [
       {
         "label": "Input",
         "description": "An input network with heat values attached to nodes",
-        "aspects": ["nodes", "edges"]
+        "aspects": [
+          "nodes",
+          "edges",
+          "nodeAttributes",
+          "edgeAttributes"
+        ]
       }
     ],
     "singletonInput": true,
@@ -66,7 +71,9 @@
       {
         "label": "Output",
         "description": "An output network with new heats and a rank attribute created by diffusion",
-        "aspects": ["nodeAttributes"]
+        "aspects": [
+          "nodeAttributes"
+        ]
       }
     ],
     "singletonOutput": true

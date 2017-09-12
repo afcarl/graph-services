@@ -18,14 +18,21 @@ class GtLayoutService(cxmate.Service):
 
     def process(self, params, input_stream):
         logging.debug(params)
-
-        layout_name = params.pop(LAYOUT_NAME)
         ol = params.pop("only-layout")
+        gs = GraphToolAdapter.to_graph_tool(input_stream)
+        gs, poss = self.process_graphs(params, gs)
+        return GraphToolAdapter.from_graph_tool(gs, poss, ol)
+
+    def process_graphs(self, params, gs):
+        """
+        :params params: Dict of parameter.
+        :params gs: A list of graph-tool's Graph objects
+        :returns: A list of positons
+        """
+        layout_name = params.pop(LAYOUT_NAME)
 
         # Get the layout function by name of the algorithm
         handler = self.__handlers.get_handler(layout_name)
-
-        gs = GraphToolAdapter.to_graph_tool(input_stream)
         poss = []
         for g in gs:
             # Call the function to get position
@@ -33,7 +40,7 @@ class GtLayoutService(cxmate.Service):
             g.gp.label = OUTPUT_LABEL
             pos = handler(g, **params)
             poss.append(pos)
-        return GraphToolAdapter.from_graph_tool(gs, poss, ol)
+        return gs, poss
 
 
 if __name__ == "__main__":

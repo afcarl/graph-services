@@ -16,49 +16,49 @@
 ## Path Parameters
 
 ### _is_directed_
-Whether input network is directed graph or not
+Whether input network is directed graph or not.
 
 #### Default value
 **True**
 
 ### _alpha_
-Damping parameter for PageRank
+Damping parameter for PageRank.
 
 #### Default value
 **0.85**
 
-### _personalization_
-The “personalization vector” consisting of a dictionary with a key for every graph node and nonzero personalization value for each node. By default, a uniform distribution is used
-
-#### Default value
-**None**
-
 ### _max_iter_
-Maximum number of iterations in power method eigenvalue solver
+Maximum number of iterations in power method eigenvalue solver.
 
 #### Default value
 **100**
 
 ### _tol_
-Error tolerance used to check convergence in power method solver
+Error tolerance used to check convergence in power method solver.
 
 #### Default value
 **0.000001**
 
+### _personalization_
+The “personalization vector” consisting of a dictionary with a key for every graph node and nonzero personalization value for each node. The nodeAttribute can be used. If _None_ (default), a uniform distribution is used.
+
+#### Default value
+**None**
+
 ### _nstart_
-Starting value of PageRank iteration for each node
+Starting value of PageRank iteration for each node. The nodeAttribute can be used.
 
 #### Default value
 **None**
 
 ### _weight_
-Edge data key to use as weight. If None weights are set to 1
+Edge data key to use as weight. The edgeAttribute can be used. If None weights are set to 1.
 
 #### Default value
-**weight**
+**None**
 
 ### _dangling_
-The outedges to be assigned to any “dangling” nodes, i.e., nodes without any outedges. The dict key is the node the outedge points to and the dict value is the weight of that outedge. By default, dangling nodes are given outedges according to the personalization vector (uniform if not specified). This must be selected to result in an irreducible transition matrix (see notes under google_matrix). It may be common to have the dangling dict to be the same as the personalization dict
+The outedges to be assigned to any “dangling” nodes, i.e., nodes without any outedges. The nodeAttribute can be used.
 
 #### Default value
 **None**
@@ -66,13 +66,16 @@ The outedges to be assigned to any “dangling” nodes, i.e., nodes without any
 
 Example:
 
-```http://localhost:8080?is_directed=False```
+```http://localhost:8080?is_directed=False&dangling=dangling```
 
 ## Body
 Required CX input fields are:
 
 * nodes
 * edges
+* nodeAttributes
+* edgeAttributes
+
 
 ## Output
 

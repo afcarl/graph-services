@@ -153,4 +153,5 @@ class GraphToolAdapter(cxmate.Adapter):
         if pos:
             for node in network.vertices():
                 position = pos[node]
-                yield builder.Position(position, get_node_id(network, node))
+                if len(position) >= 2:
+                    yield builder.Position(position, get_node_id(network, node))
