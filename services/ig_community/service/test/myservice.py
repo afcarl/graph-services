@@ -9,12 +9,12 @@ logging.basicConfig(level=logging.DEBUG)
 # Label for CXmate output
 OUTPUT_LABEL = 'out_net'
 
+
 # Community detection algorithm name
 ALGORITHM_TYPE = 'type'
 
 # Palette name
 PALETTE_NAME = 'palette'
-
 
 class IgCommunityDetectionService(cxmate.Service):
     """
@@ -28,9 +28,11 @@ class IgCommunityDetectionService(cxmate.Service):
         logging.debug(params)
         algorithm_type = params[ALGORITHM_TYPE]
         del params[ALGORITHM_TYPE]
-
         palette = params[PALETTE_NAME]
         del params[PALETTE_NAME]
+
+        # Set color palette
+        sns.set_palette(palette=palette)
 
         # Replace string None to Python None data type
         for k, v in params.items():
@@ -47,7 +49,8 @@ class IgCommunityDetectionService(cxmate.Service):
             handler = self.__handlers.get_handler(algorithm_type)
 
             # Call the function to detect community
-            handler(net, palette, **params)
+            handler(net, **params)
+
 
         return IgraphAdapter.from_igraph(ig_networks)
 
