@@ -62,6 +62,40 @@ class TestGraphToolAdapter(unittest.TestCase):
         b, ns, ls = has_corresponding_layout(cx)
         assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
 
+    def test_empty_grpah(self):
+        net1, edgeList = create_mock_graph_tool(num_nodes=0, num_edges=0)
+        GLS = GtLayoutService()
+        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+
+        gs, poss = GLS.process_graphs(params, [net1])
+        cx = GraphToolAdapter.from_graph_tool(gs,  poss)
+        b, dp = has_unique_position(cx)
+        assert b, "There are same position nodes.  %s" % (dp)
+        b, ns, ls = has_corresponding_layout(cx)
+        assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
+ 
+    def test_1node_grpah(self):
+        net1, edgeList = create_mock_graph_tool(num_nodes=1, num_edges=0)
+        GLS = GtLayoutService()
+        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+
+        gs, poss = GLS.process_graphs(params, [net1])
+        cx = GraphToolAdapter.from_graph_tool(gs,  poss)
+        b, dp = has_unique_position(cx)
+        assert b, "There are same position nodes.  %s" % (dp)
+        b, ns, ls = has_corresponding_layout(cx)
+        assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
+
+    def test_large_graph(self):
+        net1, edgeList = create_mock_graph_tool(num_nodes=1000, num_edges=3000)
+        GLS = GtLayoutService()
+        params = {'layout-name': 'default', 'only-layout': True, 'root': 0, 'vweight': 'vweight', 'eweight': 'eweight', 'pin': 'pin', 'groups': 'groups', 'pos': 'pos', 'weight': 'weight', 'rel_order': 'rel_order', 'node_weight': 'node_weight'}
+
+        gs, poss = GLS.process_graphs(params, [net1])
+        cx = GraphToolAdapter.from_graph_tool(gs,  poss)
+        b, ns, ls = has_corresponding_layout(cx)
+        assert b, "Set of Node id and Set of Layout are different. <node %s> != <layout %s>" % (ns, ls)
+
 
 def has_corresponding_layout(cx):
     """
