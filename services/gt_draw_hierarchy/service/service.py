@@ -15,7 +15,7 @@ class GtDrawHierarchyService(cxmate.Service):
     """
     def __init__(self):
         super(cxmate.Service, self).__init__()
-        self.parameter = ["layout"]
+        self.parameter = ["layout", "beta", "deg_order", "deg_size", "vsize_scale", "hsize_scale", "hshortcuts", "hide", "bip_aspect", "empty_branches"]
 
     def process(self, params, input_stream):
         logging.debug(params)

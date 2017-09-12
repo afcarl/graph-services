@@ -22,6 +22,66 @@
         "description": "Layout algorithm name"
       },
       {
+        "name": "pos",
+        "default": "pos",
+        "type": "string",
+        "description": "A name of initial vertex layout attribute. If not provided, it will be randomly chosen."
+      },
+      {
+        "name": "beta",
+        "default": "8",
+        "type": "integer",
+        "description": "Edge bundling strength."
+      },
+      {
+        "name": "deg_order",
+        "default": "True",
+        "type": "boolean",
+        "description": "If True, the vertices will be ordered according to degree inside each group."
+      },
+      {
+        "name": "deg_size",
+        "default": "True",
+        "type": "boolean",
+        "description": "If True, the (total) node degrees will be used for the default vertex sizes."
+      },
+      {
+        "name": "vsize_scale",
+        "default": "1",
+        "type": "number",
+        "description": "Multiplicative factor for the default vertex sizes."
+      },
+      {
+        "name": "hsize_scale",
+        "default": "1",
+        "type": "number",
+        "description": "Multiplicative factor for the default sizes of the hierarchy nodes."
+      },
+      {
+        "name": "hshortcuts",
+        "default": "0",
+        "type": "integer",
+        "description": "Include shortcuts to the number of upper layers in the hierarchy determined by this parameter."
+      },
+      {
+        "name": "hide",
+        "default": "0",
+        "type": "integer",
+        "description": "Hide upper levels of the hierarchy."
+      },
+      {
+        "name": "bip_aspect",
+        "default": "1",
+        "type": "number",
+        "description": "If layout == bipartite, this will define the aspect ratio of layout."
+      },
+      {
+        "name": "empty_branches",
+        "default": "False",
+        "type": "boolean",
+        "description": "If empty_branches == False, dangling branches at the upper layers will be pruned."
+      },
+      {
         "name": "only-layout",
         "default": "True",
         "type": "boolean",
