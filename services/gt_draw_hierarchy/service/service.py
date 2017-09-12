@@ -20,12 +20,27 @@ class GtDrawHierarchyService(cxmate.Service):
     def process(self, params, input_stream):
         logging.debug(params)
 
-        parameter = {p: params[p] for p in self.parameter}
         # Convert to graph-tool objects
         gs = GraphToolAdapter.to_graph_tool(input_stream)
+        ts, tposs = self.process_graphs(params, gs)
+        return GraphToolAdapter.from_graph_tool(ts, tposs, False)
+
+    def process_graphs(self, params, gs):
+        """
+        :params params: Dict of parameter.
+        :params gs: A list of graph-tool's Graph objects
+        :returns: A Graph object and its layout
+        """
+        parameter = {p: params[p] for p in self.parameter}
+
         ts = []
         tposs = []
         for g in gs:
+            if g.num_vertices() <= 1:
+                ts.append(g)
+                tpos = gt.sfdp_layout(g)
+                tposs.append(tpos)
+                continue
             state = gt.minimize_nested_blockmodel_dl(g, deg_corr=True)
             pos, t, tpos = gt.draw_hierarchy(state, output="output.pdf", **parameter)
             self.add_edge_id(t)
@@ -35,8 +50,7 @@ class GtDrawHierarchyService(cxmate.Service):
             t.gp.label = OUTPUT_LABEL
             ts.append(t)
             tposs.append(tpos)
-
-        return GraphToolAdapter.from_graph_tool(ts, tposs, params["only-layout"])
+        return ts, tposs
 
     def propagate_label(self, tgraph, sgraph):
         """

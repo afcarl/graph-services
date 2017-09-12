@@ -22,12 +22,6 @@
         "description": "Layout algorithm name"
       },
       {
-        "name": "pos",
-        "default": "pos",
-        "type": "string",
-        "description": "A name of initial vertex layout attribute. If not provided, it will be randomly chosen."
-      },
-      {
         "name": "beta",
         "default": "8",
         "type": "integer",
