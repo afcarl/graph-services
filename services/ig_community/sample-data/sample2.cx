@@ -5567,7 +5567,7 @@
   }, {
     "s" : 78,
     "n" : "label",
-    "v" : "My output network"
+    "v" : "in_net"
   }, {
     "s" : 78,
     "n" : "selected",

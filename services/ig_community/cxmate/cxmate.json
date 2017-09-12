@@ -57,7 +57,8 @@
           "nodes",
           "edges",
           "nodeAttributes",
-          "edgeAttributes"
+          "edgeAttributes",
+          "networkAttributes"
         ]
       }
     ],

@@ -49,6 +49,9 @@ class CommunityDetectionHandlers():
         self.__assign_edge_membership(net, cluster)
 
     def __fastgreedy(self, net, palette, **params):
+        if net.vcount() <= 0:
+            # the case there is no node in network
+            return
         if True in net.is_multiple():
             logging.error('fastgreedy doesn\'t support for multiple edges...')
         parameters_list = ['weights']
@@ -60,10 +63,12 @@ class CommunityDetectionHandlers():
         self.__assign_edge_membership(net, cluster)
 
     def __optimal_modularity(self, net, palette, **params):
+        if net.vcount() <= 0:
+            # the case there is no node in network
+            return
         parameters_list = ['weights']
         params = {i: params[i] for i in parameters_list}
         params['weights'] = net.es[params['weights']] if params['weights'] is not None else None
-        logging.warning(params)
 
         cluster = net.community_optimal_modularity(**params)
         net['modularity'] = cluster.modularity
@@ -106,7 +111,8 @@ class CommunityDetectionHandlers():
         
     def __assign_node_membership(self, net, cluster, palette):
         net.vs[COMMUNITY] = cluster.membership
-        sns.set_palette(palette=palette, n_colors=len(cluster.sizes()))
-        color = sns.color_palette(n_colors=len(cluster.sizes())).as_hex()
+        if len(cluster.sizes()) > 0:
+            sns.set_palette(palette=palette, n_colors=len(cluster.sizes()))
+            color = sns.color_palette(n_colors=len(cluster.sizes())).as_hex()
         for node in net.vs:
             node[COMMUNITY+'.color'] = color[node[COMMUNITY]]

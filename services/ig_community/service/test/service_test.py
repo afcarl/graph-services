@@ -42,6 +42,18 @@ class TestIgCommunityDetectionService(unittest.TestCase):
         parameter = '?type=edge_betweenness&clusters=4'
         self.testCommunityDetection1(filename='../../sample-data/sample2.cx', parameter=parameter)
 
+    def testCommunityDetectionLargeNetwork6(self):
+        parameter = ''
+        self.testCommunityDetection1(filename='../../sample-data/sample3.cx', parameter=parameter)
+
+    def testEmptyGraph(self):
+        parameter = ''
+        self.testCommunityDetection1(filename='../../sample-data/empty.cx', parameter=parameter)
+
+    def testOneNodeGraph(self):
+        parameter = ''
+        self.testCommunityDetection1(filename='../../sample-data/1node.cx', parameter=parameter)
+
 
 def countNode(cx):
     node_list = {}
