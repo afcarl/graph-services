@@ -160,14 +160,6 @@
       "description": "the size of the grid cells.",
       "type": "number"
     }, {
-      "name": "dist",
-      "default": "None",
-      "description": "the distance matrix. It must be symmetric and the symmetry is not checked -- results are unspecified when a non-symmetric distance matrix is used."
-    }, {
-      "name": "arpack_options",
-      "default": "None",
-      "description": "an ARPACKOptions object used to fine-tune the ARPACK eigenvector calculation."
-    }, {
       "name": "mode",
       "default": "out",
       "description": "It specifies which edges to consider when builing the tree.(in, out, all)",
@@ -211,7 +203,9 @@
     "output": [{
       "label": "out_net",
       "description": "Network attributes",
-      "aspects": ["cartesianLayout"]
+      "aspects": [
+        "cartesianLayout"
+      ]
     }],
     "singletonOutput": true
   }

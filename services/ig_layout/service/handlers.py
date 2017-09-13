@@ -4,9 +4,6 @@ logging.basicConfig(level=logging.DEBUG)
 # Tag for default algorithm
 DEFAULT_HANDLER = 'default'
 
-# Attribute name for the communities
-COMMUNITY = 'community'
-
 
 class IgLayoutHandlers():
     """

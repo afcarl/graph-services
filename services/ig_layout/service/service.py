@@ -23,10 +23,12 @@ class IgLayoutService(cxmate.Service):
         algorithm_type = params[ALGORITHM_TYPE]
         del params[ALGORITHM_TYPE]
 
+        # Replace string None to Python None data type
         for k, v in params.items():
             if v == str(None):
                 params[k] = None
 
+        # Convert to igraph objects
         ig_networks = IgraphAdapter.to_igraph(input_stream)
         pos_dict = {}
 
@@ -45,6 +47,14 @@ class IgLayoutService(cxmate.Service):
         return self.outputStream(ig_networks, pos_dict)
 
     def outputStream(self, networks, pos):
+        """
+        Creates a CX element generator added cartesianCoordinate from a list of igraph objects.
+
+        :params networks: A list of igraph objects
+        :params pos: postions of nodes
+        :returns: A CX element generator
+        """
+
         for i in IgraphAdapter.from_igraph(networks):
             yield i
         for k, v in pos.items():
