@@ -2,28 +2,47 @@ import cxmate
 import logging
 import igraph as ig
 from Adapter import NetworkElementBuilder, IgraphAdapter
+from handlers import IgLayoutHandlers
 
 logger = logging.getLogger('igraph_service')
-logger.setLevel(logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+
+# Label for CXmate output
+OUTPUT_LABEL = 'out_net'
+
+# Community detection algorithm name
+ALGORITHM_TYPE = 'layout'
 
 
-class IgCommunityService(cxmate.Service):
+class IgLayoutService(cxmate.Service):
+
+    def __init__(self):
+        self.__handlers = IgLayoutHandlers()
 
     def process(self, params, input_stream):
+        algorithm_type = params[ALGORITHM_TYPE]
+        del params[ALGORITHM_TYPE]
+
         for k, v in params.items():
-            if v == 'None':
-                del params[k]
+            if v == str(None):
+                params[k] = None
             elif k in ['area']:
                 params[k] = float(params[k])
             elif k in ['maxiter', 'maxdelta', 'repulserad', 'dim']:
                 params[k] = int(params[k])
-        logging.warn(params)
+
         ig_networks = IgraphAdapter.to_igraph(input_stream)
         pos_dict = {}
 
         for net in ig_networks:
-            net['label'] = 'out_net'
-            pos = net.layout_fruchterman_reingold(**params)
+            net['label'] = OUTPUT_LABEL
+
+            # Get the layout function by name of the algorithm
+            handler = self.__handlers.get_handler(algorithm_type)
+
+            # Call the function to calculate layout
+            pos = handler(net, **params)
+
             for i, vertex in enumerate(net.vs):
                 pos_dict[vertex['nodeId']] = pos[i]
 
@@ -46,6 +65,6 @@ class IgCommunityService(cxmate.Service):
 
 if __name__ == "__main__":
 
-    analyzer = IgCommunityService()
+    analyzer = IgLayoutService()
     logging.warn('Starting igraph analysis service...')
     analyzer.run()

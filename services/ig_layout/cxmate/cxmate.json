@@ -17,31 +17,76 @@
     "license": "MIT",
     "language": "Python",
     "parameters": [{
-        "name": "weights",
-        "default": "None",
-        "description": "edge weights to be used. Can be a sequence or iterable or even an edge attribute name."
-      }, {
+      "name": "layout",
+      "default": "default",
+      "description": "The name of layout function."
+    }, {
+      "name": "types",
+      "default": "types",
+      "description": "an igraph vector containing the vertex types(boolean), or an attribute name. nodeAttributes can be used."
+    }, {
+      "name": "hgap",
+      "default": "1",
+      "description": "minimum horizontal gap between vertices in the same layer.",
+      "type": "number"
+    }, {
+      "name": "vgap",
+      "default": "1",
+      "description": "vertical gap between the two layers.",
+      "type": "number"
+    }, {
+      "name": "options",
+      "default": "default",
+      "description": "you can select from five default preset parameterisations.(default, coarsen, coarsest, refine)",
+      "type": "string"
+    }, {
+      "name": "minx",
+      "default": "None",
+      "description": "it must be a vector with exactly as many elements as there are vertices in the graph. Each element is a minimum constraint on the X value of the vertex in the layout. nodeAttributes can be used."
+    }, {
+      "name": "maxx",
+      "default": "None",
+      "description": "similar to minx, but with maximum constraints. nodeAttributes can be used."
+    }, {
+      "name": "miny",
+      "default": "None",
+      "description": "similar to minx, but with the Y coordinates. nodeAttributes can be used."
+    }, {
+      "name": "maxy",
+      "default": "None",
+      "description": "similar to maxx, but with the Y coordinates. nodeAttributes can be used."
+    }, {
+      "name": "minz",
+      "default": "None",
+      "description": "similar to minx, but with the Z coordinates. Use only for 3D layouts (dim=3). nodeAttributes can be used."
+    }, {
+      "name": "maxz",
+      "default": "None",
+      "description": "similar to maxx, but with the Z coordinates. Use only for 3D layouts (dim=3). nodeAttributes can be used."
+    }, {
+      "name": "weights",
+      "default": "None",
+      "description": "edge weights to be used. Can be a sequence or iterable or even an edge attribute name."
+    }, {
       "name": "maxiter",
-      "default": "500",
-      "description": "the number of iterations to perform.",
-      "type" : "integer"      
+      "default": "None",
+      "description": "maximum number of iterations."
     }, {
       "name": "maxdelta",
-      "default": "None",
-      "description": "the maximum distance to move a vertex in an iteration. The default is the number of vertices."
+      "default": "-1",
+      "description": "the maximum distance to move a vertex in an iteration."
     }, {
       "name": "area",
-      "default": "None",
-      "description": "the area of the square on which the vertices will be placed. The default is the square of the number of vertices."
+      "default": "-1",
+      "description": "the area of the square on which the vertices will be placed."
     }, {
       "name": "coolexp",
-      "default": "1.5",
-      "description": "The cooling exponent of the simulated annealing. The default is 1.5.",
-      "type" : "number"      
+      "default": "None",
+      "description": "The cooling exponent of the simulated annealing."
     }, {
       "name": "repulserad",
-      "default": "None",
-      "description": "determines the radius at which vertex-vertex repulsion cancels out attraction of adjacent vertices. The default is the number of vertices^3."
+      "default": "-1",
+      "description": "determines the radius at which vertex-vertex repulsion cancels out attraction of adjacent vertices."
     }, {
       "name": "seed",
       "default": "None",
@@ -51,11 +96,111 @@
       "default": "2",
       "description": "the desired number of dimensions for the layout. dim=2 means a 2D layout, dim=3 means a 3D layout.",
       "type" : "integer"
+    }, {
+      "name": "niter",
+      "default": "500",
+      "description": "the number of iterations to perform.",
+      "type" : "integer"
+    }, {
+      "name": "node_charge",
+      "default": "0.001",
+      "description": "the charge of the vertices, used to calculate electric repulsion.",
+      "type" : "number"
+    }, {
+      "name": "node_mass",
+      "default": "30",
+      "description": "the mass of the vertices, used for the spring forces",
+      "type" : "integer"
+    }, {
+      "name": "spring_length",
+      "default": "0",
+      "description": "the length of the springs",
+      "type" : "integer"
+    }, {
+      "name": "spring_constant",
+      "default": "1",
+      "description": "the spring constant",
+      "type" : "integer"
+    }, {
+      "name": "max_sa_movement",
+      "default": "5",
+      "description": "the maximum amount of movement allowed in a single step along a single axis.",
+      "type" : "integer"
+    }, {
+      "name": "width",
+      "default": "0",
+      "description": "the number of vertices in a single row of the layout.",
+      "type" : "integer"
+    }, {
+      "name": "height",
+      "default": "0",
+      "description": "the number of vertices in a single column of the layout. It must not be given if the number of dimensions is 2.",
+      "type" : "integer"
+    }, {
+      "name": "sigma",
+      "default": "-1",
+      "description": "the standard base deviation of the position change proposals. None means the number of vertices / 4",
+      "type": "number"
+    }, {
+      "name": "initemp",
+      "default": "10",
+      "description": "initial temperature of the simulated annealing.",
+      "type": "number"
+    }, {
+      "name": "kkconst",
+      "default": "-1",
+      "description": "the Kamada-Kawai vertex attraction constant. None means the square of the number of vertices.",
+      "type": "number"
+    }, {
+      "name": "cellsize",
+      "default": "-1",
+      "description": "the size of the grid cells.",
+      "type": "number"
+    }, {
+      "name": "dist",
+      "default": "None",
+      "description": "the distance matrix. It must be symmetric and the symmetry is not checked -- results are unspecified when a non-symmetric distance matrix is used."
+    }, {
+      "name": "arpack_options",
+      "default": "None",
+      "description": "an ARPACKOptions object used to fine-tune the ARPACK eigenvector calculation."
+    }, {
+      "name": "mode",
+      "default": "out",
+      "description": "It specifies which edges to consider when builing the tree.(in, out, all)",
+      "type": "string"
+    }, {
+      "name": "root",
+      "default": "None",
+      "description": "the index of the root vertex or root vertices."
+    }, {
+      "name": "rootlevel",
+      "default": "None",
+      "description": "It specifies the level of the root vertices for every tree in the forest."
+    }, {
+      "name": "center",
+      "default": "0",
+      "description": "the ID of the vertex to put in the center.",
+      "type": "integer"
+    }, {
+      "name": "order",
+      "default": "None",
+      "description": "a numeric vector giving the order of the vertices (including the center vertex!)."
+    }, {
+      "name": "fixed",
+      "default": "None",
+      "description": "you can specify some vertices to be kept fixed at their original position in the seed by passing an appropriate list here.(boolean list)"
     }],
     "input": [{
       "label": "in_net",
       "description": "In net",
-      "aspects": ["nodes", "edges"]
+      "aspects": [
+        "nodes",
+        "edges",
+        "nodeAttributes",
+        "edgeAttributes",
+        "networkAttributes"
+      ]
     }],
 
     "singletonInput": true,
