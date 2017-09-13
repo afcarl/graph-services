@@ -1,5 +1,7 @@
 import cxmate
 import networkx
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 
 class GraphGeneratorService(cxmate.Service):
@@ -11,6 +13,7 @@ class GraphGeneratorService(cxmate.Service):
         :param input_stream: a python generator that returns CX elements
         :returns: a python generator that returns CX elements
         """
+        logging.debug(params)
         for x in input_stream:
             pass
         network = self.generate_graph(params)
@@ -22,6 +25,7 @@ class GraphGeneratorService(cxmate.Service):
 
 
 if __name__ == "__main__":
-  myService = GraphGeneratorService()
-  myService.run() #run starts the service listening for requests from cxMate
+    logging.info('Starting networkx random graph generator service...')
+    myService = GraphGeneratorService()
+    myService.run() #run starts the service listening for requests from cxMate
 
