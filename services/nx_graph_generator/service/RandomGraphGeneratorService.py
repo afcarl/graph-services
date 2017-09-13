@@ -3,7 +3,6 @@ import networkx
 
 from GraphGeneratorService import GraphGeneratorService
 
-
 class RandomGraphGeneratorService(GraphGeneratorService):
     def __init__(self):
         self.algorithms = {
