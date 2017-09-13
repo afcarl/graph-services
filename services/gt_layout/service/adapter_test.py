@@ -3,7 +3,6 @@ import random
 
 import graph_tool
 from Adapter import GraphToolAdapter
-from service import GtLayoutService
 
 class TestGraphToolAdapter(unittest.TestCase):
     def test_get_gt_type(self):

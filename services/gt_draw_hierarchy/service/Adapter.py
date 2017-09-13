@@ -25,7 +25,6 @@ class GraphToolAdapter(cxmate.Adapter):
 
     @staticmethod
     def read_graph_tool(ele_iter):
-
         network = gt.Graph(directed=True)
         attrs = []
         edges = {}
@@ -40,7 +39,6 @@ class GraphToolAdapter(cxmate.Adapter):
                 network.graph_properties["label"] = network.new_graph_property("string")
                 network.graph_properties["label"] = ele.label
             if ele.label != network.graph_properties['label']:
-
                 return network, itertools.chain([ele], ele_iter)
             ele_type = ele.WhichOneof('element')
             if ele_type == 'node':
@@ -99,16 +97,22 @@ class GraphToolAdapter(cxmate.Adapter):
             return 'object'
         return gt_type if not is_vector else 'vector<{t}>'.format(t=gt_type)
 
+    @staticmethod
+    def serialize(x):
+        python_type = x.__class__.__name__
+        if python_type in ['str', 'int', 'float', 'bool']:
+            return x
+        else:
+            return str(x)
 
     @staticmethod
-    def from_graph_tool(networks, poss=None, only_layout=False):
+    def from_graph_tool(networks, poss=[], only_layout=False):
         """
         Creates a CX element generator from a list of graph-tool objects
 
         :param networks: A list of graph-tool objects
         :returns: A CX element generator
         """
-
         def get_node_id(g, node):
             return g.vp.id[node] if "id" in g.vp else int(node)
 
