@@ -18,7 +18,7 @@ class IgLayoutHandlers():
     def __init__(self):
 
         self.__handlers = {
-            'default': self.__bipartite,
+            'default': self.__circle,
 
             'bipartite': self.__bipartite,
             'circle': self.__circle,
@@ -134,7 +134,7 @@ class IgLayoutHandlers():
         return pos
 
     def __reingold_tilford(self, net, **params):
-        # TODO: Fix a bug
+        # TODO: This function does NOT work, need to fix a bug
         parameters_list = ['mode', 'root', 'rootlevel']
         params = {i: params[i] for i in parameters_list}
         # parameter 'root' and 'rootlevel' are not supported now.
@@ -145,7 +145,7 @@ class IgLayoutHandlers():
         return pos
 
     def __reingold_tilford_circular(self, net, **params):
-        # TODO: Fix a bug
+        # TODO: This function does NOT work, need to fix a bug
         parameters_list = ['mode', 'root', 'rootlevel']
         params = {i: params[i] for i in parameters_list}
         # parameter 'root' and 'rootlevel' are not supported now.
