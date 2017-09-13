@@ -26,10 +26,6 @@ class IgLayoutService(cxmate.Service):
         for k, v in params.items():
             if v == str(None):
                 params[k] = None
-            elif k in ['area']:
-                params[k] = float(params[k])
-            elif k in ['maxiter', 'maxdelta', 'repulserad', 'dim']:
-                params[k] = int(params[k])
 
         ig_networks = IgraphAdapter.to_igraph(input_stream)
         pos_dict = {}

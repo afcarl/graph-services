@@ -74,11 +74,13 @@
     }, {
       "name": "maxdelta",
       "default": "-1",
-      "description": "the maximum distance to move a vertex in an iteration."
+      "description": "the maximum distance to move a vertex in an iteration.",
+      "type": "number"
     }, {
       "name": "area",
       "default": "-1",
-      "description": "the area of the square on which the vertices will be placed."
+      "description": "the area of the square on which the vertices will be placed.",
+      "type": "number"
     }, {
       "name": "coolexp",
       "default": "None",
@@ -86,7 +88,8 @@
     }, {
       "name": "repulserad",
       "default": "-1",
-      "description": "determines the radius at which vertex-vertex repulsion cancels out attraction of adjacent vertices."
+      "description": "determines the radius at which vertex-vertex repulsion cancels out attraction of adjacent vertices.",
+      "type": "number"
     }, {
       "name": "seed",
       "default": "None",
