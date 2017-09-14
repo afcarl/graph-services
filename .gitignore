@@ -430,3 +430,5 @@ fabric.properties
 
 .idea
 
+# packages for Node.js
+node_modules

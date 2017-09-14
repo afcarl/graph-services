@@ -2,21 +2,20 @@ import unittest
 import random
 
 import graph_tool
-from Adapter import Adapter
-from service import GtLayoutService
+from Adapter import GraphToolAdapter
 
 class TestGraphToolAdapter(unittest.TestCase):
     def test_get_gt_type(self):
-        self.assertEqual(Adapter.get_gt_type(1), 'int')
-        self.assertEqual(Adapter.get_gt_type(1.0), 'float')
-        self.assertEqual(Adapter.get_gt_type(True), 'bool')
-        self.assertEqual(Adapter.get_gt_type("asdf"), 'string')
-        self.assertEqual(Adapter.get_gt_type({1:"asdf"}), 'object')
-        self.assertEqual(Adapter.get_gt_type([1]), 'vector<int>')
-        self.assertEqual(Adapter.get_gt_type([1.0]), 'vector<float>')
-        self.assertEqual(Adapter.get_gt_type([True]), 'vector<bool>')
-        self.assertEqual(Adapter.get_gt_type(["asdf"]), 'vector<string>')
-        self.assertEqual(Adapter.get_gt_type([{1:"asdf"}]), 'object')
+        self.assertEqual(GraphToolAdapter.get_gt_type(1), 'int')
+        self.assertEqual(GraphToolAdapter.get_gt_type(1.0), 'float')
+        self.assertEqual(GraphToolAdapter.get_gt_type(True), 'bool')
+        self.assertEqual(GraphToolAdapter.get_gt_type("asdf"), 'string')
+        self.assertEqual(GraphToolAdapter.get_gt_type({1:"asdf"}), 'object')
+        self.assertEqual(GraphToolAdapter.get_gt_type([1]), 'vector<int>')
+        self.assertEqual(GraphToolAdapter.get_gt_type([1.0]), 'vector<float>')
+        self.assertEqual(GraphToolAdapter.get_gt_type([True]), 'vector<bool>')
+        self.assertEqual(GraphToolAdapter.get_gt_type(["asdf"]), 'vector<string>')
+        self.assertEqual(GraphToolAdapter.get_gt_type([{1:"asdf"}]), 'object')
 
     def test_from_graph_tool(self):
         net, edgeList = create_mock_graph_tool(num_nodes=100, num_edges=50)
@@ -25,7 +24,7 @@ class TestGraphToolAdapter(unittest.TestCase):
         nodeCount = 0
         edgeCount = 0
 
-        for aspect in Adapter.from_graph_tool([net]):
+        for aspect in GraphToolAdapter.from_graph_tool([net]):
             which = aspect.WhichOneof('element')
             if which == 'node':
                 nodeCount += 1
@@ -57,8 +56,8 @@ class TestGraphToolAdapter(unittest.TestCase):
                 'keyFloat': 1.2,
                 'keyBool': True})
 
-        stream = Adapter.from_graph_tool([net])
-        net_res_list = Adapter.to_graph_tool(stream)
+        stream = GraphToolAdapter.from_graph_tool([net])
+        net_res_list = GraphToolAdapter.to_graph_tool(stream)
         compare_graph_tool(net, net_res_list[0])
         self.assertEqual(net.gp.keys(), net_res_list[0].gp.keys())
         for k in net.gp.keys():
@@ -66,29 +65,29 @@ class TestGraphToolAdapter(unittest.TestCase):
 
     def testUnusualAttributeType(self):
         net, edgeList = create_mock_graph_tool(num_nodes=100, num_edges=50, data={'keyDict': {1: 2}})
-        stream = Adapter.from_graph_tool([net])
-        net_res_list = Adapter.to_graph_tool(stream)
+        stream = GraphToolAdapter.from_graph_tool([net])
+        net_res_list = GraphToolAdapter.to_graph_tool(stream)
         compare_graph_tool(net, net_res_list[0])
         # autoconvert to string for unrecognized value types
         self.assertEqual(str(net.gp['keyDict']), net_res_list[0].gp['keyDict'])
 
     def testLargeNetwork(self):
         net, edgeList = create_mock_graph_tool(num_nodes=10000, num_edges=5000)
-        stream = Adapter.from_graph_tool([net])
-        net_res_list = Adapter.to_graph_tool(stream)
+        stream = GraphToolAdapter.from_graph_tool([net])
+        net_res_list = GraphToolAdapter.to_graph_tool(stream)
         compare_graph_tool(net, net_res_list[0])
 
     def testMultipleNetworks(self):
         nets = [create_mock_graph_tool('net1')[0], create_mock_graph_tool('net2')[0]]
-        streams = Adapter.from_graph_tool(nets)
-        res_nets = Adapter.to_graph_tool(streams)
+        streams = GraphToolAdapter.from_graph_tool(nets)
+        res_nets = GraphToolAdapter.to_graph_tool(streams)
         compare_graph_tool(nets[0], res_nets[0])
         compare_graph_tool(nets[1], res_nets[1])
 
 def compare_graph_tool(net1, net2):
     """
-    net1 is a CX network
-    net2 is a networkx or a graph-tool
+    net1 is a graph-tool's Graph
+    net2 is a graph-tool's Graph
     """
     for e1 in net1.edges():
         e2 = net2.edge(e1.source(), e1.target())
@@ -123,12 +122,12 @@ def create_mock_graph_tool(label='network_label', num_nodes=100, num_edges=100, 
         edgeList[ID] = (n1, n2)
         e = n.add_edge(n.vertex(n1), n.vertex(n2))
         n.ep.id[e] = ID
-        n.ep.value = n.new_ep(Adapter.get_gt_type(val))
+        n.ep.value = n.new_ep(GraphToolAdapter.get_gt_type(val))
         n.ep.value[e] = val
         ID += 1
     for k, v in data.items():
         if k not in n.gp:
-            n.gp[k] = n.new_gp(Adapter.get_gt_type(v))
+            n.gp[k] = n.new_gp(GraphToolAdapter.get_gt_type(v))
         n.gp[k] = v
     return n, edgeList
 

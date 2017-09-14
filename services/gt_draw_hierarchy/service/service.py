@@ -32,11 +32,11 @@ class GtDrawHierarchyService(cxmate.Service):
         :returns: A Graph object and its layout
         """
         parameter = {p: params[p] for p in self.parameter}
-
         ts = []
         tposs = []
         for g in gs:
             if g.num_vertices() <= 1:
+                logging.warn("zero or one node in input_graph")
                 ts.append(g)
                 tpos = gt.sfdp_layout(g)
                 tposs.append(tpos)

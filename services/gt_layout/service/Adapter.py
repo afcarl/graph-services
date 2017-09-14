@@ -101,7 +101,7 @@ class GraphToolAdapter(cxmate.Adapter):
 
 
     @staticmethod
-    def from_graph_tool(networks, poss=None, only_layout=False):
+    def from_graph_tool(networks, poss=[], only_layout=False):
         """
         Creates a CX element generator from a list of graph-tool objects
 
