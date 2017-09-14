@@ -9,9 +9,19 @@ logger.setLevel(logging.INFO)
 
 
 class IgraphAdapter(cxmate.Adapter):
+    """
+    Static methods to convert igraph network formats to and from CX stream iterators
+    """
 
     @staticmethod
     def to_igraph(ele_iter):
+        """
+        Creates a list of igraph objects by read network elements from ele_iter
+
+        :param ele_iter: A CX element generator
+        :returns: A list of igraph objects
+        """
+
         networks = []
         while ele_iter:
             network, ele_iter = IgraphAdapter.read_igraph(ele_iter)
@@ -57,6 +67,7 @@ class IgraphAdapter(cxmate.Adapter):
             for attr in attrs:
                 source, target = edges[int(attr.edgeId)]
                 network.es[edges_index[attr.edgeId]][attr.name] = IgraphAdapter.parse_value(attr)
+                attrs = []
         return network, None
 
     @staticmethod
