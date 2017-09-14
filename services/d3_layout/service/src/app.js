@@ -2,7 +2,8 @@ const cxmate = require('cxmate');
 const d3Hierarchy = require('d3-hierarchy');
 const d3adapter = require('./d3Adapter');
 
-
+// Label for CXmate output
+const OUTPUT_LABEL = 'Output';
 class D3LayoutService extends cxmate.Service {
 
   process(params, elementStream) {
@@ -17,14 +18,14 @@ class D3LayoutService extends cxmate.Service {
 
 
     d3adapter.toD3Tree(elementStream, rootNodeId, hierarchy => {
-
       applyClusterLayout(hierarchy)
-
-      // TODO: implement this function and stream result
-      d3adapter.fromD3Tree(hierarchy)
+      d3adapter.fromD3Tree(hierarchy, OUTPUT_LABEL, (element) =>{
+        elementStream.write(element);
+      });
+      elementStream.end();
     });
-  }
 
+  }
 }
 
 const applyClusterLayout = (hierarchy, areaSize=1600) => {

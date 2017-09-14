@@ -57,6 +57,7 @@ class IgraphAdapter(cxmate.Adapter):
             for attr in attrs:
                 source, target = edges[int(attr.edgeId)]
                 network.es[edges_index[attr.edgeId]][attr.name] = IgraphAdapter.parse_value(attr)
+                attrs = []
         return network, None
 
     @staticmethod
