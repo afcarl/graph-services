@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  gt-layout-service:
+    build: ./gt_layout/service
+    image: "gt-layout-service"
+
+  gt-layout-cxmate:
+    build: ./gt_layout/cxmate
+    image: "gt-layout-cxmate"
+    ports:
+     - "3000:3000"
+    links:
+     - gt-layout-service
+
+  ig-community-service:
+    build: ./ig_community/service
+    image: "ig-community-service"
+
+  ig-community-cxmate:
+    build: ./ig_community/cxmate
+    image: "ig-community-cxmate"
+    ports:
+     - "80:80"
+    links:
+     - ig-community-service
