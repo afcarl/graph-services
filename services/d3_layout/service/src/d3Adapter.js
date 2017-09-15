@@ -28,10 +28,12 @@ const toD3Tree = (is, rootNodeId, callback) => {
   })
 
   is.on('end', () => {
-
     console.log('---END of stream ----')
-
     for (let network in networks) {
+      console.log(networks[network]);
+      if (networks[network][0].name === 'root'){
+        networks[network][0].name = findRoot(networks[network]);
+      }
       console.log('--- Calling strat3  ----')
 
       console.log(networks[network])
@@ -45,10 +47,44 @@ const toD3Tree = (is, rootNodeId, callback) => {
   })
 }
 
+
+const findRoot = (network) => {
+  parentNodeOf = {};
+  for(let edge of network){
+    parentNodeOf[edge.name] = edge.parent;
+  }
+  rootNode = network[1].name;
+  visited = {};
+  while(parentNodeOf[rootNode]){
+    if (visited[rootNode]){
+      console.log("There are loop in the network");
+      return 0;
+    }
+    visited[rootNode] = true;
+    rootNode = parentNodeOf[rootNode];
+  }
+  return rootNode;
+}
+/*const findRoot = (network) => {
+  sources = [];
+  targets = {};
+  for(let edge of network){
+    sources.push(edge.name);
+    targets[edge.parent] = true;
+  }
+  root_canditates = sources.filter(node => !targets[node]);
+  if (root_canditates.length < 0){
+    console.log("There are no root candidate node.");
+    return 0;
+  }
+  return root_canditates[0];
+}*/
+
+
 const fromD3Tree = (tree, label, callback) => {
   // TODO: data.represents
   // TODO: attribute
-  // TODO: interaction of edges
+  // TODO: edge.interaction
   console.log('--- d3 tree 2 CX ----');
   // console.log(tree);
 
@@ -75,6 +111,17 @@ const fromD3Tree = (tree, label, callback) => {
         sourceId: node_id,
         targetId: node.data.parent,
         interaction: "",
+      },
+    });
+    callback({
+      label: label,
+      element: 'cartesianLayout',
+      CartesianCoordinate: {
+        "nodeId": node_id,
+        "x": node.x,
+        "y": node.y,
+        "z": 0,
+        "viewId":0
       },
     });
     Array.prototype.push.apply(node_queue, node.children);

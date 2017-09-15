@@ -16,7 +16,6 @@ class D3LayoutService extends cxmate.Service {
     // Layout type (circular or regular tree)
     const layoutType = params['type']
 
-
     d3adapter.toD3Tree(elementStream, rootNodeId, hierarchy => {
       applyClusterLayout(hierarchy)
       d3adapter.fromD3Tree(hierarchy, OUTPUT_LABEL, (element) =>{
@@ -27,6 +26,7 @@ class D3LayoutService extends cxmate.Service {
 
   }
 }
+
 
 const applyClusterLayout = (hierarchy, areaSize=1600) => {
   const layout = d3Hierarchy

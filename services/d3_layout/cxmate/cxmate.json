@@ -33,7 +33,7 @@
       {
         "label": "Output",
         "description": "Coordinates for the laid out nodes",
-        "aspects": ["cartesianCoordinates"]
+        "aspects": ["cartesianLayout"]
       }
     ]
   }
