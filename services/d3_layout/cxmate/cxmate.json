@@ -20,6 +20,10 @@
         "name": "root",
         "default": "root",
         "description": "Unique ID of the root node of input tree"
+    }, {
+        "name": "type",
+        "default": "tree",
+        "description": "Layout style"
     }],
     "input": [
       {

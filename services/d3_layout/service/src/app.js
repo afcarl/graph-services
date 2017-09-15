@@ -7,6 +7,7 @@ const OUTPUT_LABEL = 'Output';
 class D3LayoutService extends cxmate.Service {
 
   process(params, elementStream) {
+    console.log(params);
 
     // Extract required parameters from
 
@@ -15,9 +16,14 @@ class D3LayoutService extends cxmate.Service {
 
     // Layout type (circular or regular tree)
     const layoutType = params['type']
+    const circular = layoutType === 'circular';
 
     d3adapter.toD3Tree(elementStream, rootNodeId, hierarchy => {
       applyClusterLayout(hierarchy)
+      if (circular){
+        console.log("circular");
+        hierarchy = extractPositions(hierarchy, circular);
+      }
       d3adapter.fromD3Tree(hierarchy, OUTPUT_LABEL, (element) =>{
         elementStream.write(element);
       });
@@ -37,6 +43,9 @@ const applyClusterLayout = (hierarchy, areaSize=1600) => {
   layout(hierarchy);
 
 }
+const extractPositions = (d3Tree, circular) => {
+  return walk(d3Tree, d3Tree, circular)
+}
 
 const project = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI
@@ -48,6 +57,21 @@ const project = (x, y) => {
   ];
 }
 
+const walk = (node, root, circular) => {
+  let newPos = [node.x, node.y]
+  if(circular) {
+    newPos = project(node.x, node.y)
+  }
+  node.x = newPos[0];
+  node.y = newPos[1];
+
+  const children = node.children
+
+  if (children !== undefined && children.length !== 0) {
+    children.forEach(child => walk(child, root, circular))
+  }
+  return root
+}
 
 
 const layoutService = new D3LayoutService();

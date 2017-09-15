@@ -36,7 +36,8 @@ const toD3Tree = (is, rootNodeId, callback) => {
       }
       console.log('--- Calling strat3  ----')
 
-      console.log(networks[network])
+      // console.log(networks[network])
+      // console.log(networks[network][0].name);
 
       const net = d3Hierarchy.stratify()
         .id(d => d.name)
@@ -139,50 +140,7 @@ const fromD3Tree = (tree, label, callback) => {
     //   });
     // }
   }
-  // for (let edge of cy.elements('edge').toArray()) {
-  //   let id = this.stripId(edge.data().id);
-  //   let data = edge.data();
-  //   callback({
-  //     label: label,
-  //     element: 'edge',
-  //     edge: {
-  //       id: id,
-  //       sourceId: this.stripId(data.source),
-  //       targetId: this.stripId(data.target),
-  //       interaction: data.interaction,
-  //     },
-  //   });
-  //   delete data.id;
-  //   delete data.source;
-  //   delete data.target;
-  //   delete data.interaction;
-  //   for (let edgeAttr in data) {
-  //     let type = typeof data[edgeAttr];
-  //     callback({
-  //       label: label,
-  //       element: 'edgeAttribute',
-  //       edgeAttribute: {
-  //         edgeId: id,
-  //         name: edgeAttr,
-  //         value: data[edgeAttr].toString(),
-  //         type: type,
-  //       },
-  //     });
-  //   }
-  // }
-
-  // for (let networkAttr in model.data) {
-  //   let type = typeof model.data[networkAttr];
-  //   callback({
-  //     label: label,
-  //     element: 'networkAttribute',
-  //     networkAttribute: {
-  //       name: networkAttr,
-  //       value: model.data[networkAttr].toString(),
-  //       type: type,
-  //     },
-  //   });
-  // }
+ 
 }
 
 
