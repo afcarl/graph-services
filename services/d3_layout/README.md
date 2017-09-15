@@ -37,3 +37,7 @@ Required CX input fields are:
 
 ## Output
 - `cartesianLayout`
+
+## Examples
+__cicular__
+![circular-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/d3_layout/d3_layout_circular.png)

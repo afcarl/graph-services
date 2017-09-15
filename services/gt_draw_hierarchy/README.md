@@ -86,3 +86,7 @@ From this directory, type below commands.
 From this directory, type below commands.
 1. `docker build -t gt_adapter_test -f ./service/AdapterTestDockerfile ./service`
 2. `docker run gt_adapter_test`
+
+## Examples
+__radial__
+![radial-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/gt_draw_hierarchy/gt_draw_hierarchy_radial.png)

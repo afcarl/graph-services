@@ -18,9 +18,8 @@ graph-tool is a high-performance graph library using Boost Graph.  This is an ex
 # REST API Specification
 
 ## Path Parameters
-### layout-name
+### layout-name (string, default: `sfdp_layout`)
 You can select a layout by adding query-string `layout-name`.
-The default value is `sfdp_layout`
 
 e.g. 
 ` curl --data "@sample.cx" -H "Content-type: application/json" "localhost?layout-name=sfdp_layout" | jq ".data" 
@@ -34,13 +33,8 @@ Layout names you can select are below.
 - `planar_layout`
 - `random_layout`
 
-### only-layout
-`only-layout` indicates whether the output is only layout or with network itself.
-The default value is `True`.
-
-### root
+### root (int, default: `0`)
 If you select `radial_tree_layout`, you can select root node by `root` parameter.
-The default value is `0`.
 
 ## Input
 Required CX input fields are:
@@ -52,12 +46,14 @@ Required CX input fields are:
 - `networkAttributes`
 
 ## Output
-- `nodes`
-- `edges`
-- `nodeAttributes`
-- `edgeAttributes`
-- `networkAttributes`
 - `cartesianLayout`
+
+## Examples
+__sfdp_layout__
+![sfdp-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/gt_layout/gt_layout_sfdp.png)
+
+__radial_tree_layout__
+![radial_tree-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/gt_layout/gt_layout_radial_tree.png)
 
 ## Service Unit Test
 From this directory, type below commands.

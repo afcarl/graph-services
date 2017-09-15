@@ -11,7 +11,7 @@
 
 
 ## Parameters
-### Algorithm
+### Algorithm (string, default: `fast_gnp_random_graph`)
 You can select a graph generator by adding query-string `algorithm`
 
 e.g. 
@@ -41,3 +41,22 @@ You can see parameters you can pass in the following link
 https://networkx.github.io/documentation/development/reference/generators.html#module-networkx.generators.random_graphs
 
 If you don't pass parameters, default parameters are passed.
+
+## Input
+Required CX input fields are:
+- `networkAttributes`
+
+## Output
+- `nodes`
+- `edges`
+- `nodeAttributes`
+- `edgeAttributes`
+- `networkAttributes`
+
+
+## Examples
+__lobster_layout__
+![lobster-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/nx_graph_generator/nx_graph_generator_lobster.png)
+
+__watts_strogatz_layout__
+![watts_strogatz-example](https://raw.githubusercontent.com/idekerlab/graph-services/4e4ee735388bba4fd71fa5c9e6c7cf13c3d2daf8/services/nx_graph_generator/nx_graph_generator_watts_strogatz.png)
