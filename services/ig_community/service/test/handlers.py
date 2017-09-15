@@ -103,7 +103,6 @@ class CommunityDetectionHandlers():
     def __assign_edge_membership(self, net, cluster):
         for edge in net.es:
             if cluster.membership[edge.source] == cluster.membership[edge.target]:
-                edge[COMMUNITY] = cluster.membership[edge.source]
                 edge[COMMUNITY+'.color'] = net.vs[edge.source][COMMUNITY+'.color']
         
     def __assign_node_membership(self, net, cluster, palette):
