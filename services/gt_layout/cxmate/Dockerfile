@@ -10,5 +10,5 @@ RUN mv cxmate-linux-amd64 cxmate && chmod +x ./cxmate
 
 COPY cxmate.json ./
 
-EXPOSE 80
+EXPOSE 3000
 CMD ["./cxmate"]

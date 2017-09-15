@@ -9,7 +9,7 @@ graph-tool is a high-performance graph library using Boost Graph.  This is an ex
 1. (Optional) Install jq
 1. Make sure you also have latest version of Docker Compose
 1. From this directory, type ```docker-compose build && docker-compose up```
-1. ```curl -d "@./sample-data/sample.cx" -H "Content-Type: application/json" -X POST localhost | jq .```
+1. ```curl -d "@./sample-data/sample.cx" -H "Content-Type: application/json" -X POST "localhost:3000" | jq .```
 1. Now you should get a network with some new network attributes.
 
 
