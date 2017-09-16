@@ -1,6 +1,9 @@
 # NetworkX Layout Services
-## Quick Start
+## Introduction
+NetworkX is a Python package for the creation, manipulation, and study of the structure, dynamics, and functions of complex networks.
+This is an example service to perform layout algorithms.
 
+## Quick Start
 1. Install Docker: https://store.docker.com/search?type=edition&offering=community
 1. (Optional) Install jq
 1. Make sure you also have latest version of Docker Compose
@@ -9,16 +12,12 @@
 1. Now you should get a network with some new network attributes.
 
 
-(TBD)
-
 # REST API Specification
 
 ## Path Parameters
-
-### _prog_
+### prog
 Name of Graphviz layout program.  
 If _twopi_ is selected, 'root' value in networkAttribute is used for root node.
-
 #### Default value
 **neato**
 
@@ -30,9 +29,17 @@ If _twopi_ is selected, 'root' value in networkAttribute is used for root node.
 * twopi
 
 
-Example:
-
-```http://localhost:8080?prog=dot```
+## Example
+```http://localhost:8080?prog=neato```  
+<img src="image/neato.png" alt="Drawing" style="width:600px;"/>
+```http://localhost:8080?prog=dot```  
+<img src="image/dot.png" alt="Drawing" style="width:600px;"/>
+```http://localhost:8080?prog=twopi```  
+<img src="image/twopi.png" alt="Drawing" style="width:600px;"/>
+```http://localhost:8080?prog=circo```  
+<img src="image/circo.png" alt="Drawing" style="width:600px;"/>
+```http://localhost:8080?prog=fdp```  
+<img src="image/fdp.png" alt="Drawing" style="width:600px;"/>
 
 ## Body
 Required CX input fields are:
