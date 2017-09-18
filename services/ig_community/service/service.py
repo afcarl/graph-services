@@ -1,6 +1,5 @@
 import cxmate
 import logging
-import seaborn as sns
 from Adapter import IgraphAdapter
 from handlers import CommunityDetectionHandlers
 
