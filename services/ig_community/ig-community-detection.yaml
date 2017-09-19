@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ig-comminity-detection-v1-config
+data:
+  cxmate.json: |
+  {
+  "general": {
+    "location": "0.0.0.0:80",
+    "logger": {
+      "debug": true
+    }
+  },
+  "service": {
+    "location": "localhost:8080",
+    "name": "ig-community-detection",
+    "title": "igraph community detection service",
+    "version": "1.0.0",
+    "author": "Ayato Shimada",
+    "email": "",
+    "website": "",
+    "repository": "https://github.com/idekerlab/graph-services",
+    "description": "Collection of services detecting communities in a given network",
+    "license": "MIT",
+    "language": "Python",
+    "parameters": [
+      {
+        "name": "type",
+        "default": "leading_eigenvector",
+        "description": "Name of community detection algorithm"
+      },
+      {
+        "name": "palette",
+        "default": "husl",
+        "description": "Name of color code for painting in Cytoscape"
+      },
+      {
+        "name": "weights",
+        "default": "None",
+        "description": "name of an edge attribute or a list containing edge weights."
+      },
+      {
+        "name": "initial",
+        "default": "None",
+        "description": "name of a vertex attribute or a list containing the initial vertex labels."
+      },
+      {
+        "name": "clusters",
+        "default":"-1",
+        "description": "(Optional) Desired number of communities.",
+        "type": "integer"
+      },
+      {
+        "name": "fixed",
+        "default": "None",
+        "description": "a list of booleans for each vertex. True corresponds to vertices whose labeling should not change during the algorithm."
+      }
+    ],
+    "input": [
+      {
+        "label": "in_net",
+        "description": "Input network to be used for community detection algorithms",
+        "aspects": [
+          "nodes",
+          "edges",
+          "nodeAttributes",
+          "edgeAttributes",
+          "networkAttributes"
+        ]
+      }
+    ],
+    "singletonInput": true,
+    "output": [
+      {
+        "label": "out_net",
+        "description": "Community membership list stored as node and edge attributes",
+        "aspects": ["nodeAttributes", "edgeAttributes"]
+      }
+    ],
+    "singletonOutput": true
+  }
+}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ig-community-detection-v1
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8000"
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: cxmate-http
+  selector:
+    app: ig-community-detection-v1
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ig-community-detection-v1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ig-community-detection-v1
+    spec:
+      containers:
+      - name: ig-community-detection
+        imagePullPolicy: Always
+        image: cytoscape/ci-igraph
+        ports:
+          - name: community-detection-http
+            containerPort: 8080
+      - name: cxmate
+        imagePullPolicy: Always
+        image: cytoscape/cxmate
+        ports:
+          - name: cxmate-http
+            containerPort: 80
+        volumeMounts:
+          - name: config-volume
+            mountPath: /cxmate
+      volumes:
+        - name: config-volume
+          configMap:
+            name: ig-community-detection-v1-config
